@@ -35,7 +35,7 @@ public final class Connection
 	this.baseUrl = baseUrl;
     }
 
-    InputStream doGet(String resource, Map args) throws IOException
+    public InputStream doGet(String resource, Map args) throws IOException
     {
 	if (resource == null)
 	    throw new NullPointerException("resource may not be null");
