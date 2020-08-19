@@ -34,8 +34,8 @@ public final class Queries
 	this.con = con;
     }
 
-	public CollectionQuery collection()
-	{
-	    return new CollectionQuery(con);
-	}
+    public CollectionQuery collection()
+    {
+	return new CollectionQuery(con);
     }
+}

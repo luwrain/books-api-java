@@ -16,12 +16,18 @@
 
 package org.luwrain.io.api.books.v1.users;
 
+import java.util.*;
 import java.io.*;
+import java.lang.reflect.*;
+
+import com.google.gson.reflect.*;
 
 import org.luwrain.io.api.books.v1.*;
 
 public final class CollectionQuery extends Query
 {
+    static final Type BOOK_LIST_TYPE = new TypeToken<List<Book>>(){}.getType();
+
     CollectionQuery(Connection con)
     {
 	super(con);
@@ -37,9 +43,13 @@ public final class CollectionQuery extends Query
 	return this;
     }
 
-	public Book[] exec() throws IOException
-	{
-	    final BufferedReader r = new BufferedReader(new InputStreamReader(con.doGet("/user/connection/", urlArgs)));
-	    return null;
+    public Book[] exec() throws IOException
+    {
+	try (final BufferedReader r = new BufferedReader(new InputStreamReader(con.doGet("/user/collection/", urlArgs)))){
+	    final List<Book> res = gson.fromJson(r, BOOK_LIST_TYPE);
+	    if (res == null)
+		return new Book[0];
+	    return res.toArray(new Book[res.size()]);
 	}
     }
+}

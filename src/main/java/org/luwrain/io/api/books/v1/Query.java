@@ -18,9 +18,12 @@ package org.luwrain.io.api.books.v1;
 
 import java.util.*;
 
+import com.google.gson.*;
+
 public class Query
 {
     protected final Connection con;
+    protected final Gson gson = new Gson();
     protected final Map<String, String> urlArgs = new HashMap();
 
     public Query(Connection con)
