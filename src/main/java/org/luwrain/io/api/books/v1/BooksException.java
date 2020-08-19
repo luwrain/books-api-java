@@ -14,7 +14,7 @@
    General Public License for more details.
 */
 
-package org.luwrain.io.books.v1;
+package org.luwrain.io.api.books.v1;
 
 /**
  * Indicates errors on requests to the server.

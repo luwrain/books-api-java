@@ -14,18 +14,18 @@
    General Public License for more details.
 */
 
-package org.luwrain.io.books.v1;
+package org.luwrain.io.api.books.v1;
 
 import com.google.gson.annotations.*;
 
-final class ErrorResult
+public final class Book
 {
-    @SerializedName("message")
-    private String message = null;
+    @SerializedName("author")
+    private String author = null;
 
-    String getMessage()
-    {
-	return message != null?message:"";
-    }
+    @SerializedName("title")
+    private String title = null;
 
+    @SerializedName("id")
+    private String id = null;
 }
