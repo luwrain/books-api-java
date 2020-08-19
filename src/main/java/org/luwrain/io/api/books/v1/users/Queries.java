@@ -38,4 +38,9 @@ public final class Queries
     {
 	return new CollectionQuery(con);
     }
+
+    public RegisterQuery register()
+    {
+	return new RegisterQuery(con);
+    }
 }

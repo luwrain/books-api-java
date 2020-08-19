@@ -46,4 +46,9 @@ class Base extends Assert
     {
 	return this.passwd;
     }
+
+    protected boolean isReady()
+    {
+	return this.mail != null && this.passwd != null;
+    }
 }

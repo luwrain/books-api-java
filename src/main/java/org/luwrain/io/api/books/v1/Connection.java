@@ -35,7 +35,7 @@ public final class Connection
 	this.baseUrl = baseUrl;
     }
 
-    public InputStream doGet(String resource, Map args) throws IOException
+    public InputStream doGet(String resource, Map<String, String> args) throws IOException
     {
 	if (resource == null)
 	    throw new NullPointerException("resource may not be null");
@@ -64,8 +64,41 @@ public final class Connection
 	    return httpCon.getInputStream();
 	case 400:
 	case 500:
+	    httpCon.getInputStream().close();
 	    throw new IOException(makeExceptionMessage(httpCon));
 	default:
+	    httpCon.getInputStream().close();
+	    throw new IOException("Response code " + httpCon.getResponseCode());
+	}
+    }
+
+    public InputStream doPost(String resource, Map<String, String> args) throws IOException
+    {
+	final URL url = new URL(getBaseUrl(), resource);
+	final HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+	httpCon.setDoOutput(true);
+	httpCon.setInstanceFollowRedirects( false );
+	httpCon.setRequestMethod("POST");
+	final byte[] postData       = encodeArgs(args, "").getBytes( java.nio.charset.StandardCharsets.UTF_8 );
+	final int    postDataLength = postData.length;
+	httpCon.setRequestProperty( "Content-Type", "application/x-www-form-urlencoded"); 
+	httpCon.setRequestProperty( "charset", "utf-8");
+	httpCon.setRequestProperty( "Content-Length", Integer.toString( postDataLength ));
+	httpCon.setUseCaches( false );
+	try( DataOutputStream w = new DataOutputStream( httpCon.getOutputStream())) {
+	    w.write( postData );
+	    w.flush();
+	}
+	switch(httpCon.getResponseCode())
+	{
+	case 200:
+	    return httpCon.getInputStream();
+	case 400:
+	case 500:
+	    httpCon.getInputStream().close();
+	    throw new IOException(makeExceptionMessage(httpCon));
+	default:
+	    httpCon.getInputStream().close();
 	    throw new IOException("Response code " + httpCon.getResponseCode());
 	}
     }
@@ -80,6 +113,21 @@ public final class Connection
 	out.write("FIXME");
 	out.close();
 	httpCon.getInputStream();
+    }
+
+    private String encodeArgs(Map<String, String> args, String prefix)
+    {
+	if (args.isEmpty())
+	    return "";
+	final StringBuilder b = new StringBuilder();
+	boolean first = true;
+	for(Map.Entry<String, String> e: args.entrySet())
+	{
+	    b.append(first?prefix:"&");
+	    first = false;
+	    b.append(URLEncoder.encode(e.getKey())).append("=").append(e.getValue());
+	}
+	return new String(b);
     }
 
     private URL getBaseUrl() throws IOException

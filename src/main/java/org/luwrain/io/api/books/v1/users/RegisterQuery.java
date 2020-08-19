@@ -24,27 +24,32 @@ import com.google.gson.reflect.*;
 
 import org.luwrain.io.api.books.v1.*;
 
-public final class CollectionQuery extends Query
+public final class RegisterQuery extends Query
 {
-    static final Type BOOK_LIST_TYPE = new TypeToken<List<Book>>(){}.getType();
-
-    CollectionQuery(Connection con)
+    RegisterQuery(Connection con)
     {
 	super(con);
     }
 
-    public CollectionQuery atoken(String atoken)
+    public RegisterQuery mail(String mail)
     {
-	return (CollectionQuery)addArg("atoken", atoken);
+	return (RegisterQuery)addArg("mail", mail);
     }
 
-    public Book[] exec() throws IOException
+        public RegisterQuery passwd(String passwd)
     {
-	try (final BufferedReader r = new BufferedReader(new InputStreamReader(con.doGet("/user/collection/", urlArgs)))){
-	    final List<Book> res = gson.fromJson(r, BOOK_LIST_TYPE);
-	    if (res == null)
-		return new Book[0];
-	    return res.toArray(new Book[res.size()]);
+	return (RegisterQuery)addArg("passwd", passwd);
+    }
+
+    public void exec() throws IOException
+    {
+	try (final BufferedReader r = new BufferedReader(new InputStreamReader(con.doPost("/user/register/", urlArgs)))){
+	    String line = r.readLine();
+	    while (line != null)
+	    {
+		System.out.println(line);
+		line = r.readLine();
+	    }
 	}
     }
 }
