@@ -43,4 +43,9 @@ public final class Queries
     {
 	return new RegisterQuery(con);
     }
+
+    public AccessTokenQuery accessToken()
+    {
+	return new AccessTokenQuery(con);
+    }
 }

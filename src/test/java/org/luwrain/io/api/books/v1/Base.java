@@ -9,9 +9,10 @@ class Base extends Assert
 {
     static private final File CONFIG_FILE = new File(new File(System.getProperty("user.home")), ".books-api-java.properties");
 
-    private String baseUrl;
-    private String mail;
-    private String passwd;
+    private String baseUrl = null;
+    private String mail = null;
+    private String passwd = null;
+    private String accessToken = null;
 
     protected Base()
     {
@@ -35,6 +36,19 @@ class Base extends Assert
     Books newBooks()
     {
 	return new Factory().newInstance(baseUrl);
+    }
+
+    protected String getAccessToken() throws IOException
+    {
+	if (this.accessToken != null)
+	    return this.accessToken;
+	final org.luwrain.io.api.books.v1.users.AccessTokenQuery.Response r = newBooks().users().accessToken().mail(getMail()).passwd(getPasswd()).exec();
+	assertNotNull(r);
+	assertTrue(r.isOk());
+	this.accessToken = r.getAccessToken();
+	assertNotNull(accessToken);
+	assertFalse(accessToken.isEmpty());
+	return this.accessToken;
     }
 
     protected String getMail()

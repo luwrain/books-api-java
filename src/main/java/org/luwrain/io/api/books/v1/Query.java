@@ -19,6 +19,7 @@ package org.luwrain.io.api.books.v1;
 import java.util.*;
 
 import com.google.gson.*;
+import com.google.gson.annotations.*;
 
 public class Query
 {
@@ -41,5 +42,19 @@ public class Query
 	    throw new IllegalArgumentException(argName + " can't be empty");
 	urlArgs.put(argName, argValue);
 	return this;
+    }
+
+    static public class CommonResponse
+    {
+	@SerializedName("type")
+	private final String type = null;
+	public String getType()
+	{
+	    return this.type;
+	}
+	public boolean isOk()
+	{
+	    return this.type != null && this.type.equals("OK");
+	}
     }
 }

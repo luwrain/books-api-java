@@ -58,18 +58,9 @@ public final class Connection
 	final URL url = new URL(getBaseUrl(), new String(b));
 	final HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
 	httpCon.connect();
-	switch(httpCon.getResponseCode())
-	{
-	case 200:
+	if (httpCon.getResponseCode() == 200)
 	    return httpCon.getInputStream();
-	case 400:
-	case 500:
-	    httpCon.getInputStream().close();
-	    throw new IOException(makeExceptionMessage(httpCon));
-	default:
-	    httpCon.getInputStream().close();
-	    throw new IOException("Response code " + httpCon.getResponseCode());
-	}
+	throw buildException(url, httpCon);
     }
 
     public InputStream doPost(String resource, Map<String, String> args) throws IOException
@@ -89,18 +80,9 @@ public final class Connection
 	    w.write( postData );
 	    w.flush();
 	}
-	switch(httpCon.getResponseCode())
-	{
-	case 200:
+	if (httpCon.getResponseCode() == 200)
 	    return httpCon.getInputStream();
-	case 400:
-	case 500:
-	    httpCon.getInputStream().close();
-	    throw new IOException(makeExceptionMessage(httpCon));
-	default:
-	    httpCon.getInputStream().close();
-	    throw new IOException("Response code " + httpCon.getResponseCode());
-	}
+	throw buildException(url, httpCon);
     }
 
     void doPut(String resource) throws IOException
@@ -135,18 +117,18 @@ public final class Connection
 	return new URL(baseUrl);
     }
 
-    private String makeExceptionMessage(HttpURLConnection con) throws IOException
+private BooksException buildException(URL url, HttpURLConnection con) throws IOException
     {
-	final InputStream is = con.getErrorStream();
-	try {
-	    final BufferedReader r = new BufferedReader(new InputStreamReader(is));
-	    final Gson gson = new Gson();
-	    final ErrorResult errorRes = gson.fromJson(r, ErrorResult.class);
-	    return "Response code " + con.getResponseCode() + " " + errorRes.getMessage();
+	final int code = con.getResponseCode();
+	if (code != 400 && code != 500)
+	    return new BooksException("HTTP code: " + String.valueOf(code) + ", URL: " + url.toString());
+	final Gson gson = new Gson();
+	try (final BufferedReader r = new BufferedReader(new InputStreamReader(con.getInputStream())))
+	{
+	    final ErrorResponse resp = (ErrorResponse)gson.fromJson(r, ErrorResponse.class);
+	    if (resp == null)
+			    return new BooksException("HTTP code: " + String.valueOf(code) + ", URL: " + url.toString());
+	    return new BooksException(code, resp);
 	}
-	finally {
-	    if (is != null)
-		is.close();
-	}
-    }
+	    }
 }

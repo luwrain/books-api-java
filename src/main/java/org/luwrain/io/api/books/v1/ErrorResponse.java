@@ -16,16 +16,6 @@
 
 package org.luwrain.io.api.books.v1;
 
-import com.google.gson.annotations.*;
-
-final class ErrorResult
+final class ErrorResponse extends Query.CommonResponse
 {
-    @SerializedName("message")
-    private String message = null;
-
-    String getMessage()
-    {
-	return message != null?message:"";
-    }
-
 }

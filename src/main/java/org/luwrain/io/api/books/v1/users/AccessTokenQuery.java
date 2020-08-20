@@ -19,33 +19,41 @@ package org.luwrain.io.api.books.v1.users;
 import java.util.*;
 import java.io.*;
 
+import com.google.gson.annotations.*;
+
 import org.luwrain.io.api.books.v1.*;
 
-public final class RegisterQuery extends Query
+public final class AccessTokenQuery extends Query
 {
-    RegisterQuery(Connection con)
+    AccessTokenQuery(Connection con)
     {
 	super(con);
     }
 
-    public RegisterQuery mail(String mail)
+    public AccessTokenQuery mail(String mail)
     {
-	return (RegisterQuery)addArg("mail", mail);
+	return (AccessTokenQuery)addArg("mail", mail);
     }
 
-        public RegisterQuery passwd(String passwd)
+        public AccessTokenQuery passwd(String passwd)
     {
-	return (RegisterQuery)addArg("passwd", passwd);
+	return (AccessTokenQuery)addArg("passwd", passwd);
     }
 
     public Response exec() throws IOException
     {
-	try (final BufferedReader r = new BufferedReader(new InputStreamReader(con.doPost("user/register/", urlArgs)))){
+	try (final BufferedReader r = new BufferedReader(new InputStreamReader(con.doPost("user/atoken/", urlArgs)))){
 	    return gson.fromJson(r, Response.class);
 	}
     }
 
     public final class Response extends CommonResponse
     {
+	@SerializedName("atoken")
+	private String accessToken = null;
+	public String getAccessToken()
+	{
+	    return this.accessToken;
+	}
     }
 }

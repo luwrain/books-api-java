@@ -40,7 +40,7 @@ public final class CollectionQuery extends Query
 
     public Book[] exec() throws IOException
     {
-	try (final BufferedReader r = new BufferedReader(new InputStreamReader(con.doGet("/user/collection/", urlArgs)))){
+	try (final BufferedReader r = new BufferedReader(new InputStreamReader(con.doGet("user/collection/", urlArgs)))){
 	    final List<Book> res = gson.fromJson(r, BOOK_LIST_TYPE);
 	    if (res == null)
 		return new Book[0];

@@ -29,8 +29,11 @@ package org.luwrain.io.api.books.v1;
  *
  * @see Books
  */
-public class BooksException extends Exception
+public class BooksException extends java.io.IOException
 {
+    private final int httpCode;
+    private final ErrorResponse errorResponse;
+
     /**
      * The constructor accepting the exception which caused the error. The same message
      * as in the exception being wrapped is used.
@@ -40,5 +43,21 @@ public class BooksException extends Exception
     public BooksException(Exception e)
     {
 	super(e.getMessage(), e);
+	this.httpCode = -1;
+	this.errorResponse = null;
+    }
+
+    public BooksException(String message)
+    {
+	super(message);
+		this.httpCode = -1;
+	this.errorResponse = null;
+    }
+
+    public BooksException(int httpCode, ErrorResponse errorResponse)
+    {
+	super("HTTP code: " + String.valueOf(httpCode) + ", type: " + ((errorResponse != null && errorResponse.getType() != null)?errorResponse.getType():null));
+	this .httpCode = httpCode;
+	this.errorResponse = errorResponse;
     }
 }
