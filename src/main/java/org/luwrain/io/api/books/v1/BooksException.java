@@ -60,4 +60,14 @@ public class BooksException extends java.io.IOException
 	this .httpCode = httpCode;
 	this.errorResponse = errorResponse;
     }
+
+    public int getHttpCode()
+    {
+	return this.httpCode;
+    }
+
+    public ErrorResponse getErrorResponse()
+    {
+	return this.errorResponse;
+    }
 }
