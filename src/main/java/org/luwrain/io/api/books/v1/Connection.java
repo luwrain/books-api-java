@@ -123,7 +123,7 @@ private BooksException buildException(URL url, HttpURLConnection con) throws IOE
 	if (code != 400 && code != 500)
 	    return new BooksException("HTTP code: " + String.valueOf(code) + ", URL: " + url.toString());
 	final Gson gson = new Gson();
-	try (final BufferedReader r = new BufferedReader(new InputStreamReader(con.getInputStream())))
+	try (final BufferedReader r = new BufferedReader(new InputStreamReader(con.getErrorStream())))
 	{
 	    final ErrorResponse resp = (ErrorResponse)gson.fromJson(r, ErrorResponse.class);
 	    if (resp == null)
