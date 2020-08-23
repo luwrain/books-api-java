@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.luwrain</groupId>
   <artifactId>luwrain-books-api-java</artifactId>
-  <version>1.0.0</version>
+  <version>0.1.0</version>
   <name>A Java client for org.luwrain.books</name>
   <url>https://github.com/luwrain/books-api-java</url>
   <dependencies>
