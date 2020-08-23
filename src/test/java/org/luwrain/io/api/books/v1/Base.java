@@ -66,6 +66,8 @@ class Base extends Assert
 
     @Test public void accessTokenInvalidCredentials()
     {
+	if (!isReady())
+	    return;
 	try {
 	    newBooks().users().accessToken().exec();
 	    assertTrue(false);
