@@ -29,7 +29,7 @@ public final class UsersTest extends Base
 
         @Test public void confirmLimitExceeding() throws IOException
     {
-	final String mail = "test-confirm-limit-exceeding@luwrain.org";
+	final String mail = "junit-confirm-limit-exceeding@luwrain.org";
 	if (!isReady())
 	    return;
 	final RegisterQuery.Response r1 = newBooks().users().register().mail(mail).passwd("123123123").exec();
@@ -49,20 +49,61 @@ public final class UsersTest extends Base
 		assertEquals(r.getType(), "INVALID_CONFIRMATION_CODE");
 	    }
 	}
-
-		    try {
-			final ConfirmQuery.Response r = newBooks().users().confirm().mail(mail).confirmationCode("10000").exec();
-		assertTrue(false);
-	    }
-	    catch(BooksException e)
-	    {
-		final ErrorResponse r = e.getErrorResponse();
-		assertNotNull(r);
-		assertNotNull(r.getType());
-		assertEquals(r.getType(), "TOO_MANY_ATTEMPTS");
-	    }
-
-		    
+	try {
+	    final ConfirmQuery.Response r = newBooks().users().confirm().mail(mail).confirmationCode("10000").exec();
+	    assertTrue(false);
+	}
+	catch(BooksException e)
+	{
+	    final ErrorResponse r = e.getErrorResponse();
+	    assertNotNull(r);
+	    assertNotNull(r.getType());
+	    assertEquals(r.getType(), "TOO_MANY_ATTEMPTS");
+	}
     }
 
+    @Test public void confirmNoMail() throws IOException
+    {
+	try {
+	    final ConfirmQuery.Response r = newBooks().users().confirm().confirmationCode("10000").exec();
+	    assertTrue(false);
+	}
+	catch(BooksException e)
+	{
+	    final ErrorResponse r = e.getErrorResponse();
+	    assertNotNull(r);
+	    assertNotNull(r.getType());
+	    assertEquals(r.getType(), "NO_MAIL");
+	}
+    }
+
+        @Test public void confirmNoConfirmationCode() throws IOException
+    {
+	try {
+	    final ConfirmQuery.Response r = newBooks().users().confirm().mail("junit-none@luwrain.org").exec();
+	    assertTrue(false);
+	}
+	catch(BooksException e)
+	{
+	    final ErrorResponse r = e.getErrorResponse();
+	    assertNotNull(r);
+	    assertNotNull(r.getType());
+	    assertEquals(r.getType(), "NO_CONFIRMATION_CODE");
+	}
+    }
+
+            @Test public void confirmInvalidMail() throws IOException
+    {
+	try {
+	    final ConfirmQuery.Response r = newBooks().users().confirm().mail(getMail()).confirmationCode("10000").exec();
+	    assertTrue(false);
+	}
+	catch(BooksException e)
+	{
+	    final ErrorResponse r = e.getErrorResponse();
+	    assertNotNull(r);
+	    assertNotNull(r.getType());
+	    assertEquals(r.getType(), "INVALID_MAIL");
+	}
+    }
 }
