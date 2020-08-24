@@ -14,41 +14,36 @@
 
 package org.luwrain.io.api.books.v1.users;
 
-//import java.net.*;
-//import java.util.*;
+import java.util.*;
 import java.io.*;
 
 import org.luwrain.io.api.books.v1.*;
 
-
-public final class Queries
+public final class ConfirmQuery extends Query
 {
-    private final Connection con;
-
-    public Queries(Connection con)
+    ConfirmQuery(Connection con)
     {
-	if (con == null)
-	    throw new NullPointerException("con can't be null");
-	this.con = con;
+	super(con);
     }
 
-    public CollectionQuery collection()
+    public ConfirmQuery mail(String mail)
     {
-	return new CollectionQuery(con);
+	return (ConfirmQuery)addArg("mail", mail);
     }
 
-    public RegisterQuery register()
+        public ConfirmQuery confirmationCode(String code)
     {
-	return new RegisterQuery(con);
+	return (ConfirmQuery)addArg("code", code);
     }
 
-        public ConfirmQuery confirm()
+    public Response exec() throws IOException
     {
-	return new ConfirmQuery(con);
+	try (final BufferedReader r = new BufferedReader(new InputStreamReader(con.doGet("user/confirm/", urlArgs)))){
+	    return gson.fromJson(r, Response.class);
+	}
     }
 
-    public AccessTokenQuery accessToken()
+    public final class Response extends CommonResponse
     {
-	return new AccessTokenQuery(con);
     }
 }
