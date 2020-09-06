@@ -20,14 +20,62 @@ import org.luwrain.io.api.books.v1.users.*;
 
 public final class UsersTest extends Base
 {
-        @Test public void register() throws IOException
+    @Test public void register() throws IOException
     {
 	if (!isReady())
 	    return;
 	assertTrue(newBooks().users().register().mail("test@test.org").passwd("0123456789").exec().isOk());
     }
 
-        @Test public void confirmLimitExceeding() throws IOException
+    @Test public void accessTokenNotRegistered() throws IOException
+    {
+		if (!isReady())
+	    return;
+		try {
+	    newBooks().users().accessToken().mail("none@luwrain.org").passwd(getPasswd()).exec();
+	    assertTrue(false);
+	}
+	catch(BooksException e)
+	{
+	    final ErrorResponse r = e.getErrorResponse();
+	    assertNotNull(r);
+	    assertNotNull(r.getType());
+	    assertEquals("NOT_REGISTERED", r.getType());
+	}
+    }
+
+        @Test public void accessTokenInvalidCredentials() throws IOException
+    {
+	if (!isReady())
+	    return;
+	//no neither mail nor password
+	try {
+	    newBooks().users().accessToken().exec();
+	    assertTrue(false);
+	}
+	catch(BooksException e)
+	{
+	    final ErrorResponse r = e.getErrorResponse();
+	    assertNotNull(r);
+	    assertNotNull(r.getType());
+	    assertEquals(r.getType(), "INVALID_CREDENTIALS");
+	}
+	//no password
+	try {
+	    newBooks().users().accessToken().mail(getMail()).exec();
+	    assertTrue(false);
+	}
+	catch(BooksException e)
+	{
+	    final ErrorResponse r = e.getErrorResponse();
+	    assertNotNull(r);
+	    assertNotNull(r.getType());
+	    assertEquals(r.getType(), "INVALID_CREDENTIALS");
+	}
+    }
+
+
+    @Test public void confirmLimitExceeding() throws IOException
     {
 	final String mail = "junit-confirm-limit-exceeding@luwrain.org";
 	if (!isReady())
@@ -77,7 +125,7 @@ public final class UsersTest extends Base
 	}
     }
 
-        @Test public void confirmNoConfirmationCode() throws IOException
+    @Test public void confirmNoConfirmationCode() throws IOException
     {
 	try {
 	    final ConfirmQuery.Response r = newBooks().users().confirm().mail("junit-none@luwrain.org").exec();
@@ -92,7 +140,7 @@ public final class UsersTest extends Base
 	}
     }
 
-            @Test public void confirmInvalidMail() throws IOException
+    @Test public void confirmInvalidMail() throws IOException
     {
 	try {
 	    final ConfirmQuery.Response r = newBooks().users().confirm().mail(getMail()).confirmationCode("10000").exec();

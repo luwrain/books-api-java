@@ -64,57 +64,6 @@ class Base extends Assert
 	return this.accessToken;
     }
 
-    @Test public void accessTokenInvalidCredentials()
-    {
-	if (!isReady())
-	    return;
-	try {
-	    newBooks().users().accessToken().exec();
-	    assertTrue(false);
-	}
-	catch(BooksException e)
-	{
-	    final ErrorResponse r = e.getErrorResponse();
-	    assertNotNull(r);
-	    assertNotNull(r.getType());
-	    assertEquals(r.getType(), "INVALID_CREDENTIALS");
-	}
-	catch(IOException e)
-	{
-	    assertTrue(false);
-	}
-	try {
-	    newBooks().users().accessToken().mail(getMail()).exec();
-	    assertTrue(false);
-	}
-	catch(BooksException e)
-	{
-	    final ErrorResponse r = e.getErrorResponse();
-	    assertNotNull(r);
-	    assertNotNull(r.getType());
-	    assertEquals(r.getType(), "INVALID_CREDENTIALS");
-	}
-	catch(IOException e)
-	{
-	    assertTrue(false);
-	}
-	try {
-	    newBooks().users().accessToken().mail("none@luwrain.org").passwd(getPasswd()).exec();
-	    assertTrue(false);
-	}
-	catch(BooksException e)
-	{
-	    final ErrorResponse r = e.getErrorResponse();
-	    assertNotNull(r);
-	    assertNotNull(r.getType());
-	    assertEquals(r.getType(), "INVALID_CREDENTIALS");
-	}
-	catch(IOException e)
-	{
-	    assertTrue(false);
-	}
-    }
-
     protected String getMail()
     {
 	return this.mail;

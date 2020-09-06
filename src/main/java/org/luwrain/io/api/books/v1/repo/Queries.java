@@ -34,4 +34,9 @@ public final class Queries
     {
 	return new CreateQuery(con);
     }
+
+    public UploadQuery upload()
+    {
+	return new UploadQuery(con);
+    }
 }

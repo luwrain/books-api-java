@@ -31,6 +31,11 @@ public final class RepoTest extends Base
 	final String bookId = r1.getNewBookId();
 	assertNotNull(bookId);
 	assertFalse(bookId.isEmpty());
-	
+	final UploadQuery.Response r2 = newBooks().repo().upload().atoken(getAccessToken()).format(UploadQuery.FORMAT_MP3_ZIP).bookId(bookId).exec();
+	assertNotNull(r2);
+	assertTrue(r2.isOk());
+	final String uploadId = r2.getUploadId();
+	assertNotNull(uploadId);
+	assertFalse(uploadId.isEmpty());
     }
 }
