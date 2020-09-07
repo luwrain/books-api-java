@@ -27,6 +27,99 @@ public final class UsersTest extends Base
 	assertTrue(newBooks().users().register().mail("test@test.org").passwd("0123456789").exec().isOk());
     }
 
+        @Test public void registerNoMail() throws IOException
+    {
+		if (!isReady())
+	    return;
+		try {
+	    newBooks().users().register().exec();
+	    assertTrue(false);
+	}
+	catch(BooksException e)
+	{
+	    final ErrorResponse r = e.getErrorResponse();
+	    assertNotNull(r);
+	    assertNotNull(r.getType());
+	    assertEquals(RegisterQuery.NO_MAIL, r.getType());
+	}
+    }
+
+            @Test public void registerInvalidMail() throws IOException
+    {
+		if (!isReady())
+	    return;
+		try {
+		    newBooks().users().register().mail("lala").exec();
+	    assertTrue(false);
+	}
+	catch(BooksException e)
+	{
+	    final ErrorResponse r = e.getErrorResponse();
+	    assertNotNull(r);
+	    assertNotNull(r.getType());
+	    assertEquals(RegisterQuery.INVALID_MAIL, r.getType());
+	}
+    }
+
+                @Test public void registerNoPassword() throws IOException
+    {
+		if (!isReady())
+	    return;
+		try {
+		    newBooks().users().register().mail("test@luwrain.org").exec();
+	    assertTrue(false);
+	}
+	catch(BooksException e)
+	{
+	    final ErrorResponse r = e.getErrorResponse();
+	    assertNotNull(r);
+	    assertNotNull(r.getType());
+	    assertEquals(RegisterQuery.NO_PASSWORD, r.getType());
+	}
+    }
+
+                    @Test public void registerINvalidPassword() throws IOException
+    {
+		if (!isReady())
+	    return;
+		final StringBuilder b = new StringBuilder();
+		for(int i = 0;i < 256; i++)
+		    b.append("1");
+		try {
+		    newBooks().users().register().mail("test@luwrain.org").passwd(new String(b)).exec();
+	    assertTrue(false);
+	}
+	catch(BooksException e)
+	{
+	    final ErrorResponse r = e.getErrorResponse();
+	    assertNotNull(r);
+	    assertNotNull(r.getType());
+	    assertEquals(RegisterQuery.INVALID_PASSWORD, r.getType());
+	}
+    }
+
+                        @Test public void registerMailbAlreadyInUse() throws IOException
+    {
+		if (!isReady())
+	    return;
+		try {
+		    newBooks().users().register().mail(getMail()).passwd(getPasswd()).exec();
+	    assertTrue(false);
+	}
+	catch(BooksException e)
+	{
+	    final ErrorResponse r = e.getErrorResponse();
+	    assertNotNull(r);
+	    assertNotNull(r.getType());
+	    assertEquals(RegisterQuery.MAIL_ADDRESS_ALREADY_IN_USE, r.getType());
+	}
+    }
+
+
+
+
+
+
     @Test public void accessTokenNotRegistered() throws IOException
     {
 		if (!isReady())

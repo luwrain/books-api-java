@@ -21,6 +21,10 @@ import com.google.gson.annotations.*;
 
 public class Query
 {
+    static public final String
+	INTERNAL_SERVER_ERROR = "INTERNAL_SERVER_ERROR",
+	INVALID_QUERY = "INVALID_QUERY";
+
     protected final Connection con;
     protected final Gson gson = new Gson();
     protected final Map<String, String> urlArgs = new HashMap();

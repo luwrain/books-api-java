@@ -16,6 +16,12 @@ package org.luwrain.io.api.books.v1;
 
 public final class Factory
 {
+
+        static public Books newInstance()
+    {
+	return new Books(new Connection("https://books.luwrain.org/v1/"));
+    }
+
     static public Books newInstance(String baseUrl)
     {
 	return new Books(new Connection(baseUrl));
