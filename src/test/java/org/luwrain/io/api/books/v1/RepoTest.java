@@ -25,13 +25,13 @@ public final class RepoTest extends Base
     {
 	if (!isReady())
 	    return;
-	final CreateQuery.Response r1 = newBooks().repo().create().atoken(getAccessToken()).exec();
+	final CreateQuery.Response r1 = newBooks().repo().create().accessToken(getAccessToken()).exec();
 	assertNotNull(r1);
 	assertTrue(r1.isOk());
 	final String bookId = r1.getNewBookId();
 	assertNotNull(bookId);
 	assertFalse(bookId.isEmpty());
-	final UploadQuery.Response r2 = newBooks().repo().upload().atoken(getAccessToken()).format(UploadQuery.FORMAT_MP3_ZIP).bookId(bookId).exec();
+	final UploadQuery.Response r2 = newBooks().repo().upload().accessToken(getAccessToken()).format(UploadQuery.FORMAT_MP3_ZIP).bookId(bookId).exec();
 	assertNotNull(r2);
 	assertTrue(r2.isOk());
 	final String uploadId = r2.getUploadId();

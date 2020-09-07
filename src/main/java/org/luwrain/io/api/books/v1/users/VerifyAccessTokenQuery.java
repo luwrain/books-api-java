@@ -16,33 +16,40 @@ package org.luwrain.io.api.books.v1.users;
 
 import java.util.*;
 import java.io.*;
-import java.lang.reflect.*;
 
-import com.google.gson.reflect.*;
+import com.google.gson.annotations.*;
 
 import org.luwrain.io.api.books.v1.*;
 
-public final class CollectionQuery extends Query
+public final class VerifyAccessTokenQuery extends Query
 {
-    static final Type BOOK_LIST_TYPE = new TypeToken<List<Book>>(){}.getType();
+static public final String
+    NO_VALID_ACCESS_TOKEN = "NO_VALID_ACCESS_TOKEN";
 
-    CollectionQuery(Connection con)
+    VerifyAccessTokenQuery(Connection con)
     {
 	super(con);
     }
 
-    public CollectionQuery accessToken(String atoken)
+    public VerifyAccessTokenQuery accessToken(String atoken)
     {
-	return (CollectionQuery)addArg("atoken", atoken);
+	return (VerifyAccessTokenQuery)addArg("atoken", atoken);
     }
 
-    public Book[] exec() throws IOException
+    public Response exec() throws IOException
     {
-	try (final BufferedReader r = new BufferedReader(new InputStreamReader(con.doGet("user/collection/", urlArgs)))){
-	    final List<Book> res = gson.fromJson(r, BOOK_LIST_TYPE);
-	    if (res == null)
-		return new Book[0];
-	    return res.toArray(new Book[res.size()]);
+	try (final BufferedReader r = new BufferedReader(new InputStreamReader(con.doGet("user/verify-atoken/", urlArgs)))){
+	    return gson.fromJson(r, Response.class);
+	}
+    }
+
+    public final class Response extends CommonResponse
+    {
+	@SerializedName("mail")
+	private String mail = null;
+	public String getMail()
+	{
+	    return this.mail;
 	}
     }
 }

@@ -27,7 +27,7 @@ public final class CreateQuery extends Query
 	super(con);
     }
 
-    public CreateQuery atoken(String atoken)
+    public CreateQuery accessToken(String atoken)
     {
 	return (CreateQuery)addArg("atoken", atoken);
     }

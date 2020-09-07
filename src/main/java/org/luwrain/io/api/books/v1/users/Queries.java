@@ -32,6 +32,11 @@ public final class Queries
 	this.con = con;
     }
 
+        public AccessTokenQuery accessToken()
+    {
+	return new AccessTokenQuery(con);
+    }
+
     public CollectionQuery collection()
     {
 	return new CollectionQuery(con);
@@ -47,8 +52,8 @@ public final class Queries
 	return new ConfirmQuery(con);
     }
 
-    public AccessTokenQuery accessToken()
+            public VerifyAccessTokenQuery verifyAccessToken()
     {
-	return new AccessTokenQuery(con);
+	return new VerifyAccessTokenQuery(con);
     }
 }

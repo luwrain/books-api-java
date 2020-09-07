@@ -115,11 +115,6 @@ public final class UsersTest extends Base
 	}
     }
 
-
-
-
-
-
     @Test public void accessTokenNotRegistered() throws IOException
     {
 		if (!isReady())
@@ -166,7 +161,6 @@ public final class UsersTest extends Base
 	    assertEquals(r.getType(), "INVALID_CREDENTIALS");
 	}
     }
-
 
     @Test public void confirmLimitExceeding() throws IOException
     {
@@ -247,4 +241,32 @@ public final class UsersTest extends Base
 	    assertEquals(r.getType(), "INVALID_MAIL");
 	}
     }
+
+        @Test public void verifyAccessToken() throws IOException
+    {
+	if (!isReady())
+	    return;
+	final VerifyAccessTokenQuery.Response r = newBooks().users().verifyAccessToken().accessToken(getAccessToken()).exec();
+assertNotNull(r);
+assertNotNull(r.getType());
+assertEquals(VerifyAccessTokenQuery.OK, r.getType());
+assertNotNull(r.getMail());
+assertEquals(getMail(), r.getMail());
+    }
+
+            @Test public void verifyAccessToken1() throws IOException
+    {
+	if (!isReady())
+	    return;
+	try {
+newBooks().users().verifyAccessToken().exec();
+assertTrue(false);
+	}
+	catch(BooksException e)
+	{
+	    final ErrorResponse r = e.getErrorResponse();
+	    assertNotNull(r);
+	    assertEquals(VerifyAccessTokenQuery.NO_VALID_ACCESS_TOKEN, r.getType());
+	}
+	}
 }
