@@ -18,6 +18,7 @@ import java.io.*;
 import org.junit.*;
 
 import org.luwrain.io.api.books.v1.repo.*;
+import org.luwrain.io.api.books.v1.collection.*;
 
 public final class RepoTest extends Base
 {
@@ -42,6 +43,7 @@ public final class RepoTest extends Base
 	//FIXME:tagInvalidTag
 	tagNoValue(bookId);
 	//FIXME:tagTooLongValue
+	collection();
     }
 
     private void upload(String bookId) throws IOException
@@ -119,6 +121,15 @@ public final class RepoTest extends Base
 	    assertNotNull(r.getType());
 	    assertEquals(TagQuery.NO_VALUE, r.getType());
 	}
+    }
+
+    private void collection() throws IOException
+    {
+	final CollectionQuery.Response r = newBooks().collection().collection().accessToken(getAccessToken()).exec();
+	assertNotNull(r);
+	assertTrue(r.isOk());
+	final Book[] books = r.getBooks();
+	assertNotNull(books);
     }
 
     @Test public void repo() throws IOException

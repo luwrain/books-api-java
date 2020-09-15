@@ -12,7 +12,7 @@
  * the License.
  */
 
-package org.luwrain.io.api.books.v1.users;
+package org.luwrain.io.api.books.v1.collection;
 
 //import java.net.*;
 //import java.util.*;
@@ -32,23 +32,8 @@ public final class Queries
 	this.con = con;
     }
 
-        public AccessTokenQuery accessToken()
+    public CollectionQuery collection()
     {
-	return new AccessTokenQuery(con);
+	return new CollectionQuery(con);
     }
-
-    public RegisterQuery register()
-    {
-	return new RegisterQuery(con);
     }
-
-        public ConfirmQuery confirm()
-    {
-	return new ConfirmQuery(con);
-    }
-
-            public VerifyAccessTokenQuery verifyAccessToken()
-    {
-	return new VerifyAccessTokenQuery(con);
-    }
-}

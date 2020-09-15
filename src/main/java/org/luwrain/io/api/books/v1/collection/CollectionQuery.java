@@ -12,20 +12,17 @@
  * the License.
  */
 
-package org.luwrain.io.api.books.v1.users;
+package org.luwrain.io.api.books.v1.collection;
 
 import java.util.*;
 import java.io.*;
-import java.lang.reflect.*;
 
-import com.google.gson.reflect.*;
+import com.google.gson.annotations.*;
 
 import org.luwrain.io.api.books.v1.*;
 
 public final class CollectionQuery extends Query
 {
-    static final Type BOOK_LIST_TYPE = new TypeToken<List<Book>>(){}.getType();
-
     CollectionQuery(Connection con)
     {
 	super(con);
@@ -36,13 +33,23 @@ public final class CollectionQuery extends Query
 	return (CollectionQuery)addArg("atoken", atoken);
     }
 
-    public Book[] exec() throws IOException
+    public Response exec() throws IOException
     {
-	try (final BufferedReader r = new BufferedReader(new InputStreamReader(con.doGet("user/collection/", urlArgs)))){
-	    final List<Book> res = gson.fromJson(r, BOOK_LIST_TYPE);
-	    if (res == null)
-		return new Book[0];
-	    return res.toArray(new Book[res.size()]);
+	try (final BufferedReader r = new BufferedReader(new InputStreamReader(con.doGet("collection/", urlArgs)))){
+	    	    final Response res = gson.fromJson(r, Response.class);
+	    return res;
+	}
+    }
+
+    static public final class Response extends CommonResponse
+    {
+	@SerializedName("books")
+	private List<Book> books = null;
+	public Book[] getBooks()
+	{
+	    if (this.books == null)
+		return null;
+	    return this.books.toArray(new Book[this.books.size()]);
 	}
     }
 }
