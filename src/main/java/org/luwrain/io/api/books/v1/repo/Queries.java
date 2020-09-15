@@ -39,4 +39,10 @@ public final class Queries
     {
 	return new UploadQuery(con);
     }
+
+        public TagQuery tag()
+    {
+	return new TagQuery(con);
+    }
+
 }

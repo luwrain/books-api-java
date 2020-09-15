@@ -24,7 +24,8 @@ public class Query
     static public final String
 	OK = "OK",
 	INTERNAL_SERVER_ERROR = "INTERNAL_SERVER_ERROR",
-	INVALID_QUERY = "INVALID_QUERY";
+	INVALID_QUERY = "INVALID_QUERY",
+	PERMISSION_DENIED = "PERMISSION_DENIED";
 
     protected final Connection con;
     protected final Gson gson = new Gson();
