@@ -14,39 +14,41 @@
 
 package org.luwrain.io.api.books.v1.repo;
 
-//import java.net.*;
+import java.util.*;
 import java.io.*;
+import com.google.gson.annotations.*;
 
 import org.luwrain.io.api.books.v1.*;
 
-public final class Queries
+public final class RepoQuery extends Query
 {
-    private final Connection con;
-
-    public Queries(Connection con)
+        RepoQuery(Connection con)
     {
-	if (con == null)
-	    throw new NullPointerException("con can't be null");
-	this.con = con;
+	super(con);
     }
 
-    public CreateQuery create()
+    public RepoQuery accessToken(String atoken)
     {
-	return new CreateQuery(con);
+	return (RepoQuery)addArg("atoken", atoken);
     }
 
-    public UploadQuery upload()
+    public Response exec() throws IOException
     {
-	return new UploadQuery(con);
+	try (final BufferedReader r = new BufferedReader(new InputStreamReader(con.doGet("repo/", urlArgs)))){
+	    final Response res = gson.fromJson(r, Response.class);
+	    return res;
+	    	}
     }
 
-        public TagQuery tag()
+    public final class Response extends CommonResponse
     {
-	return new TagQuery(con);
-    }
-
-    public RepoQuery repo()
-    {
-	return new RepoQuery(con);
+	@SerializedName("books")
+	private List<Book> books = null;
+	public Book[] getBooks()
+	{
+	    if (this.books == null)
+		return null;
+	    return this.books.toArray(new Book[this.books.size()]);
+	}
     }
 }

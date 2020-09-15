@@ -21,9 +21,9 @@ import org.luwrain.io.api.books.v1.repo.*;
 
 public final class RepoTest extends Base
 {
-static public final String
-    TITLE = "TITLE";
-    
+    static public final String
+	TITLE = "TITLE";
+
     @Test public void cycle() throws IOException
     {
 	if (!isReady())
@@ -46,7 +46,7 @@ static public final String
 
     private void upload(String bookId) throws IOException
     {
-		final UploadQuery.Response r = newBooks().repo().upload().accessToken(getAccessToken()).format(UploadQuery.FORMAT_MP3_ZIP).bookId(bookId).exec();
+	final UploadQuery.Response r = newBooks().repo().upload().accessToken(getAccessToken()).format(UploadQuery.FORMAT_MP3_ZIP).bookId(bookId).exec();
 	assertNotNull(r);
 	assertTrue(r.isOk());
 	final String uploadId = r.getUploadId();
@@ -58,14 +58,14 @@ static public final String
     {
 	final TagQuery.Response r = newBooks().repo().tag().accessToken(getAccessToken()).tag(TagQuery.TAG_TITLE).value(TITLE).bookId(bookId).exec();
 	assertNotNull(r);
-		assertTrue(r.isOk());
+	assertTrue(r.isOk());
     }
 
     private void tagNoBookId() throws IOException
     {
 	try {
-newBooks().repo().tag().accessToken(getAccessToken()).tag(TagQuery.TAG_TITLE).value(TITLE).exec();
-assertTrue(false);
+	    newBooks().repo().tag().accessToken(getAccessToken()).tag(TagQuery.TAG_TITLE).value(TITLE).exec();
+	    assertTrue(false);
 	}
 	catch(BooksException e)
 	{
@@ -76,11 +76,11 @@ assertTrue(false);
 	}
     }
 
-        private void tagInvalidBookId() throws IOException
+    private void tagInvalidBookId() throws IOException
     {
 	try {
 	    newBooks().repo().tag().accessToken(getAccessToken()).bookId("zzz").tag(TagQuery.TAG_TITLE).value(TITLE).exec();
-assertTrue(false);
+	    assertTrue(false);
 	}
 	catch(BooksException e)
 	{
@@ -91,11 +91,11 @@ assertTrue(false);
 	}
     }
 
-            private void tagNoTag(String bookId) throws IOException
+    private void tagNoTag(String bookId) throws IOException
     {
 	try {
 	    newBooks().repo().tag().accessToken(getAccessToken()).bookId(bookId).value(TITLE).exec();
-assertTrue(false);
+	    assertTrue(false);
 	}
 	catch(BooksException e)
 	{
@@ -106,11 +106,11 @@ assertTrue(false);
 	}
     }
 
-                private void tagNoValue(String bookId) throws IOException
+    private void tagNoValue(String bookId) throws IOException
     {
 	try {
 	    newBooks().repo().tag().accessToken(getAccessToken()).bookId(bookId).tag(TagQuery.TAG_TITLE).exec();
-assertTrue(false);
+	    assertTrue(false);
 	}
 	catch(BooksException e)
 	{
@@ -121,4 +121,12 @@ assertTrue(false);
 	}
     }
 
+    @Test public void repo() throws IOException
+    {
+	final RepoQuery.Response r = newBooks().repo().repo().accessToken(getAccessToken()).exec();
+	assertNotNull(r);
+	assertTrue(r.isOk());
+	final Book[] books = r.getBooks();
+	assertNotNull(books);
+    }
 }
