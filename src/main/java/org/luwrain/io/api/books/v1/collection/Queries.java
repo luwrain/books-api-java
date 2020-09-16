@@ -36,4 +36,9 @@ public final class Queries
     {
 	return new CollectionQuery(con);
     }
+
+    public AddQuery add()
+    {
+	return new AddQuery(con);
+    }
     }

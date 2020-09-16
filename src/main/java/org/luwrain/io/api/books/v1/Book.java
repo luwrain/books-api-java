@@ -18,12 +18,28 @@ import com.google.gson.annotations.*;
 
 public final class Book
 {
-    @SerializedName("author")
-    private String author = null;
+    @SerializedName("id")
+    private String id = null;
+
+       @SerializedName("authors")
+    private String authors = null;
 
     @SerializedName("title")
     private String title = null;
 
-    @SerializedName("id")
-    private String id = null;
+    public String getId()
+    {
+	return this.id;
+    }
+
+    public String getTitle()
+    {
+	return this.title;
+    }
+
+    public String getAuthors()
+    {
+	return this.authors;
+    }
+
 }

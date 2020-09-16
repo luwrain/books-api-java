@@ -23,7 +23,7 @@ import org.luwrain.io.api.books.v1.collection.*;
 public final class RepoTest extends Base
 {
     static public final String
-	TITLE = "TITLE";
+	TITLE = "Евгений Онегин";
 
     @Test public void cycle() throws IOException
     {
@@ -43,7 +43,8 @@ public final class RepoTest extends Base
 	//FIXME:tagInvalidTag
 	tagNoValue(bookId);
 	//FIXME:tagTooLongValue
-	collection();
+		collectionAdd(bookId);
+	collectionIncluded(bookId);
     }
 
     private void upload(String bookId) throws IOException
@@ -123,14 +124,35 @@ public final class RepoTest extends Base
 	}
     }
 
-    private void collection() throws IOException
+    private void collectionIncluded(String bookId) throws IOException
     {
 	final CollectionQuery.Response r = newBooks().collection().collection().accessToken(getAccessToken()).exec();
 	assertNotNull(r);
 	assertTrue(r.isOk());
 	final Book[] books = r.getBooks();
 	assertNotNull(books);
+	assertTrue(books.length > 0);
+	Book book = null;
+	System.out.println("need " + bookId);
+	for(Book b: books)
+	{
+	    assertNotNull(b.getId());
+	    System.out.println("booked " + b.getId());
+	    if (b.getId().equals(bookId))
+		book = b;
+	}
+	assertNotNull(book);
+	assertNotNull(book.getTitle());
+	assertEquals(TITLE, book.getTitle());
     }
+
+        private void collectionAdd(String bookId) throws IOException
+    {
+	final AddQuery.Response r = newBooks().collection().add().accessToken(getAccessToken()).bookId(bookId).exec();
+	assertNotNull(r);
+	assertTrue(r.isOk());
+    }
+
 
     @Test public void repo() throws IOException
     {
