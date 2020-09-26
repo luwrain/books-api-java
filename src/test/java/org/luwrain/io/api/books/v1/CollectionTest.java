@@ -21,11 +21,11 @@ import org.luwrain.io.api.books.v1.collection.*;
 
 public final class CollectionTest extends Base
 {
-@Test public void addNoValidAccessToken() throws IOException
+    @Test public void addNoValidAccessToken() throws IOException
     {
 	try {
-newBooks().collection().add().exec();
-assertTrue(false);
+	    newBooks().collection().add().exec();
+	    assertTrue(false);
 	}
 	catch(BooksException e)
 	{
@@ -40,7 +40,7 @@ assertTrue(false);
     {
 	try {
 	    newBooks().collection().add().accessToken(getAccessToken()).exec();
-assertTrue(false);
+	    assertTrue(false);
 	}
 	catch(BooksException e)
 	{
@@ -51,11 +51,11 @@ assertTrue(false);
 	}
     }
 
-        @Test public void addInvalidBookId() throws IOException
+    @Test public void addInvalidBookId() throws IOException
     {
 	try {
 	    newBooks().collection().add().accessToken(getAccessToken()).bookId("zzz").exec();
-assertTrue(false);
+	    assertTrue(false);
 	}
 	catch(BooksException e)
 	{
@@ -65,8 +65,4 @@ assertTrue(false);
 	    assertEquals(AddQuery.INVALID_BOOK_ID, r.getType());
 	}
     }
-
-    
-
-    
-    }
+}

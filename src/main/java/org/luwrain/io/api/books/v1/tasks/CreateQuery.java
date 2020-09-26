@@ -12,42 +12,40 @@
  * the License.
  */
 
-package org.luwrain.io.api.books.v1.users;
+package org.luwrain.io.api.books.v1.tasks;
 
-//import java.net.*;
-//import java.util.*;
+import java.util.*;
 import java.io.*;
+import com.google.gson.annotations.*;
 
 import org.luwrain.io.api.books.v1.*;
 
-public final class Queries
+public final class CreateQuery extends Query
 {
-    private final Connection con;
-
-    public Queries(Connection con)
+    CreateQuery(Connection con)
     {
-	if (con == null)
-	    throw new NullPointerException("con can't be null");
-	this.con = con;
+	super(con);
     }
 
-        public AccessTokenQuery accessToken()
+        public CreateQuery accessToken(String atoken)
     {
-	return new AccessTokenQuery(con);
+	return (CreateQuery)addArg("atoken", atoken);
     }
 
-    public RegisterQuery register()
+    public Response exec() throws IOException
     {
-	return new RegisterQuery(con);
+	try (final BufferedReader r = new BufferedReader(new InputStreamReader(con.doGet("tasks/create/", urlArgs)))){
+	    return gson.fromJson(r, Response.class);
+	}
     }
 
-        public ConfirmQuery confirm()
+    public final class Response extends CommonResponse
     {
-	return new ConfirmQuery(con);
-    }
-
-            public VerifyAccessTokenQuery verifyAccessToken()
-    {
-	return new VerifyAccessTokenQuery(con);
+	@SerializedName("task")
+	private String newTaskId = null;
+	public String getNewTaskId()
+	{
+	    return this.newTaskId;
+	}
     }
 }
