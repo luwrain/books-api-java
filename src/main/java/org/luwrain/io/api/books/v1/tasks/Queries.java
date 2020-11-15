@@ -35,4 +35,10 @@ public final class Queries
     {
 	return new CreateQuery(con);
     }
+
+            public RemoveQuery remove()
+    {
+	return new RemoveQuery(con);
+    }
+
 }

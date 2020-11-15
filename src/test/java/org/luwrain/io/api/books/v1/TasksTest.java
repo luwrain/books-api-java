@@ -31,5 +31,45 @@ public final class TasksTest extends Base
 	final String taskId = r.getNewTaskId();
 	assertNotNull(taskId);
 	assertFalse(taskId.isEmpty());
+
+	final RemoveQuery.Response rr = newBooks().tasks().remove().accessToken(getAccessToken()).taskId(taskId).exec();
+	assertNotNull(rr);
+	assertTrue(rr.isOk());
     }
+
+@Test public void removeNoTaskId() throws IOException
+    {
+	if (!isReady())
+	    return;
+	try {
+	    newBooks().tasks().remove().accessToken(getAccessToken()).exec();
+	    assertTrue(false);
+	}
+	catch(BooksException e)
+	{
+	    final ErrorResponse r = e.getErrorResponse();
+	    assertNotNull(r);
+	    assertNotNull(r.getType());
+	    assertEquals(RemoveQuery.NO_TASK_ID, r.getType());
+	}
+    }
+
+    @Test public void removeInvalidTaskId() throws IOException
+    {
+	if (!isReady())
+	    return;
+	try {
+	    newBooks().tasks().remove().accessToken(getAccessToken()).taskId("123").exec();
+	    assertTrue(false);
+	}
+	catch(BooksException e)
+	{
+	    final ErrorResponse r = e.getErrorResponse();
+	    assertNotNull(r);
+	    assertNotNull(r.getType());
+	    assertEquals(RemoveQuery.INVALID_TASK_ID, r.getType());
+	}
+    }
+
+
 }
