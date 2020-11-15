@@ -17,19 +17,19 @@ package org.luwrain.io.api.books.v1;
 import java.io.*;
 import org.junit.*;
 
-import org.luwrain.io.api.books.v1.tasks.*;
+import org.luwrain.io.api.books.v1.source.*;
 
-public final class TasksTest extends Base
+public final class SourceTest extends Base
 {
     @Test public void cycle() throws IOException
     {
 	if (!isReady())
 	    return;
-	final CreateQuery.Response r = newBooks().tasks().create().accessToken(getAccessToken()).exec();
+	final UploadQuery.Response r = newBooks().source().upload().accessToken(getAccessToken()).exec();
 	assertNotNull(r);
 	assertTrue(r.isOk());
-	final String taskId = r.getNewTaskId();
-	assertNotNull(taskId);
-	assertFalse(taskId.isEmpty());
+	final String uploadUrl = r.getUploadUrl();
+	assertNotNull(uploadUrl);
+	assertFalse(uploadUrl.isEmpty());
     }
 }

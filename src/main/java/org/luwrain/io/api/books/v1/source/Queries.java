@@ -12,24 +12,25 @@
  * the License.
  */
 
-package org.luwrain.io.api.books.v1;
+package org.luwrain.io.api.books.v1.source;
 
 import java.io.*;
-import org.junit.*;
 
-import org.luwrain.io.api.books.v1.tasks.*;
+import org.luwrain.io.api.books.v1.*;
 
-public final class TasksTest extends Base
+public final class Queries
 {
-    @Test public void cycle() throws IOException
+    private final Connection con;
+
+    public Queries(Connection con)
     {
-	if (!isReady())
-	    return;
-	final CreateQuery.Response r = newBooks().tasks().create().accessToken(getAccessToken()).exec();
-	assertNotNull(r);
-	assertTrue(r.isOk());
-	final String taskId = r.getNewTaskId();
-	assertNotNull(taskId);
-	assertFalse(taskId.isEmpty());
+	if (con == null)
+	    throw new NullPointerException("con can't be null");
+	this.con = con;
+    }
+
+        public UploadQuery upload()
+    {
+	return new UploadQuery(con);
     }
 }
