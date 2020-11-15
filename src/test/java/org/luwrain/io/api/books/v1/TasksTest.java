@@ -21,7 +21,7 @@ import org.luwrain.io.api.books.v1.tasks.*;
 
 public final class TasksTest extends Base
 {
-    @Test public void cycle() throws IOException
+    @Ignore @Test public void cycle() throws IOException
     {
 	if (!isReady())
 	    return;
