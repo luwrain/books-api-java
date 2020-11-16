@@ -66,6 +66,12 @@ private final CookieManager cookieMan = new CookieManager();
 	return new org.luwrain.io.api.books.v1.tasks.Queries(con);
     }
 
+            public org.luwrain.io.api.books.v1.upload.Queries upload()
+    {
+	return new org.luwrain.io.api.books.v1.upload.Queries(con);
+    }
+
+
         public org.luwrain.io.api.books.v1.repo.Queries repo()
     {
 	return new org.luwrain.io.api.books.v1.repo.Queries(con);

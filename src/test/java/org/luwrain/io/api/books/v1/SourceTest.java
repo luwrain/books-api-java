@@ -18,18 +18,25 @@ import java.io.*;
 import org.junit.*;
 
 import org.luwrain.io.api.books.v1.source.*;
+import org.luwrain.io.api.books.v1.upload.*;
 
 public final class SourceTest extends Base
 {
     @Test public void cycle() throws IOException
     {
-	if (!isReady())
+	if (!isReady() && getUploadDocX() != null)
 	    return;
-	final UploadQuery.Response r = newBooks().source().upload().accessToken(getAccessToken()).exec();
-	assertNotNull(r);
-	assertTrue(r.isOk());
-	final String uploadUrl = r.getUploadUrl();
+	final UploadQuery.Response r1 = newBooks().source().upload().accessToken(getAccessToken()).exec();
+	assertNotNull(r1);
+	assertTrue(r1.isOk());
+	final String uploadUrl = r1.getUploadUrl();
 	assertNotNull(uploadUrl);
 	assertFalse(uploadUrl.isEmpty());
+	final SourceUploadQuery.Response r2 = newBooks().upload().source().exec(uploadUrl, new File(getUploadDocX()));
+	assertNotNull(r2);
+	assertTrue(r2.isOk());
+	final String sourceId = r2.getSourceId();
+	assertNotNull(sourceId);
+	assertEquals(ID_LEN, sourceId.length());
     }
 }

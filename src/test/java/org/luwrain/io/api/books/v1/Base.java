@@ -20,11 +20,13 @@ import org.junit.*;
 
 class Base extends Assert
 {
+    static public final int ID_LEN = 40;
     static private final File CONFIG_FILE = new File(new File(System.getProperty("user.home")), ".books-api-java.properties");
 
     private String baseUrl = null;
     private String mail = null;
     private String passwd = null;
+    private String uploadDocX = null;
     private String accessToken = null;
 
     protected Base()
@@ -37,6 +39,7 @@ class Base extends Assert
 	    this.baseUrl = props.getProperty("url");
 	    this.mail = props.getProperty("mail");
 	    this.passwd = props.getProperty("passwd");
+	    this.uploadDocX = props.getProperty("upload-docx");
 	}
 	catch(IOException e)
 	{
@@ -72,6 +75,11 @@ class Base extends Assert
     protected String getPasswd()
     {
 	return this.passwd;
+    }
+
+        protected String getUploadDocX()
+    {
+	return this.uploadDocX;
     }
 
     protected boolean isReady()

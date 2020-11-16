@@ -61,6 +61,34 @@ public final class Connection
 	throw buildException(url, httpCon);
     }
 
+    public InputStream doUpload(String resource, File file) throws IOException
+    {
+	final URL url = new URL(resource);
+	String charset = "UTF-8";
+	final String boundary = Long.toHexString(System.currentTimeMillis());
+	final String CRLF = "\r\n";
+	final HttpURLConnection con = (HttpURLConnection)url.openConnection();
+	con.setDoOutput(true);
+	con.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+	try (
+	     final OutputStream output = con.getOutputStream();
+	     final PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, charset), true);
+	     ) {
+	    writer.append("--" + boundary).append(CRLF);
+	    writer.append("Content-Disposition: form-data; name=\"data\"; filename=\"" + file.getName() + "\"").append(CRLF);
+	    writer.append("Content-Type: " + URLConnection.guessContentTypeFromName(file.getName())).append(CRLF);
+	    writer.append("Content-Transfer-Encoding: binary").append(CRLF);
+	    writer.append(CRLF).flush();
+	    java.nio.file.Files.copy(file.toPath(), output);
+	    output.flush();
+	    writer.append(CRLF).flush(); // CRLF is important! It indicates end of boundary.
+	    writer.append("--" + boundary + "--").append(CRLF).flush();
+	}
+	if (con.getResponseCode() == 200)
+	    return con.getInputStream();
+	throw buildException(url, con);
+    }
+
     public InputStream doPost(String resource, Map<String, String> args) throws IOException
     {
 	final URL url = new URL(getBaseUrl(), resource);
