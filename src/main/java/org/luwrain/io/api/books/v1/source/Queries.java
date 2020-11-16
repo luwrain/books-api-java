@@ -29,6 +29,12 @@ public final class Queries
 	this.con = con;
     }
 
+            public RemoveQuery remove()
+    {
+	return new RemoveQuery(con);
+    }
+
+
         public UploadQuery upload()
     {
 	return new UploadQuery(con);

@@ -26,6 +26,7 @@ public class Query
 	OK = "OK",
 	INTERNAL_SERVER_ERROR = "INTERNAL_SERVER_ERROR",
 	INVALID_QUERY = "INVALID_QUERY",
+	LOCKED = "LOCKED",
 	PERMISSION_DENIED = "PERMISSION_DENIED";
 
     protected final Connection con;

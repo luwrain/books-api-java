@@ -38,5 +38,47 @@ public final class SourceTest extends Base
 	final String sourceId = r2.getSourceId();
 	assertNotNull(sourceId);
 	assertEquals(ID_LEN, sourceId.length());
+
+	final RemoveQuery.Response rr = newBooks().source().remove().accessToken(getAccessToken()).sourceId(sourceId).waiting().exec();
+	assertNotNull(rr);
+	assertTrue(rr.isOk());
     }
+
+@Test public void removeNoSourceId() throws IOException
+    {
+	if (!isReady())
+	    return;
+	try {
+	    newBooks().source().remove().accessToken(getAccessToken()).exec();
+	    assertTrue(false);
+	}
+	catch(BooksException e)
+	{
+	    final ErrorResponse r = e.getErrorResponse();
+	    assertNotNull(r);
+	    assertNotNull(r.getType());
+	    assertEquals(RemoveQuery.NO_SOURCE_ID, r.getType());
+	}
+    }
+
+    @Test public void removeInvalidSourceId() throws IOException
+    {
+	if (!isReady())
+	    return;
+	try {
+	    newBooks().source().remove().accessToken(getAccessToken()).sourceId("123").exec();
+	    assertTrue(false);
+	}
+	catch(BooksException e)
+	{
+	    final ErrorResponse r = e.getErrorResponse();
+	    assertNotNull(r);
+	    assertNotNull(r.getType());
+	    assertEquals(RemoveQuery.INVALID_SOURCE_ID, r.getType());
+	}
+    }
+
+
+
+    
 }
