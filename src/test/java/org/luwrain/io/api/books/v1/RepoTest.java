@@ -25,7 +25,7 @@ public final class RepoTest extends Base
     static public final String
 	TITLE = "Евгений Онегин";
 
-    @Ignore @Test public void cycle() throws IOException
+    @Ignore @Test public void main() throws IOException
     {
 	if (!isReady())
 	    return;

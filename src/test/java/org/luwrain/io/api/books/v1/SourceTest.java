@@ -22,7 +22,7 @@ import org.luwrain.io.api.books.v1.upload.*;
 
 public final class SourceTest extends Base
 {
-    @Test public void cycle() throws IOException
+    @Test public void main() throws IOException
     {
 	if (!isReady() && getUploadDocX() != null)
 	    return;
@@ -47,9 +47,10 @@ public final class SourceTest extends Base
 	assertNotNull(r3.getName());
 	assertEquals(getUploadDocX().substring(getUploadDocX().lastIndexOf("/") + 1), r3.getName());
 	assertNotNull(r3.getStatus());
-	assertEquals("ACTIVE", r3.getStatus());
+	assertEquals(SourceQuery.ACTIVE, r3.getStatus());
 	assertNotNull(r3.getFormat());
 	assertEquals("DOCX", r3.getFormat());
+	assertTrue(r3.getSize() > 0);
 
 	final SourceQuery.File[] files = r3.getFiles();
 	assertNotNull(files);
@@ -58,17 +59,57 @@ public final class SourceTest extends Base
 	assertNotNull(file);
 	assertEquals(0, file.getId());
 	assertNotNull(file.getName());
-		assertEquals(getUploadDocX().substring(getUploadDocX().lastIndexOf("/") + 1), file.getName());
-		assertTrue(file.getSize() > 0);
-		assertNotNull(file.getFormat());
-		assertEquals("DOCX", file.getFormat());
+	assertEquals(getUploadDocX().substring(getUploadDocX().lastIndexOf("/") + 1), file.getName());
+	assertTrue(file.getSize() > 0);
+	assertNotNull(file.getFormat());
+	assertEquals("DOCX", file.getFormat());
 
 	final RemoveQuery.Response rr = newBooks().source().remove().accessToken(getAccessToken()).sourceId(sourceId).waiting().exec();
 	assertNotNull(rr);
 	assertTrue(rr.isOk());
     }
 
-@Test public void removeNoSourceId() throws IOException
+        @Test public void errorMp3() throws IOException
+    {
+	if (!isReady() && getUploadMp3() != null)
+	    return;
+	final UploadQuery.Response r1 = newBooks().source().upload().accessToken(getAccessToken()).exec();
+	assertNotNull(r1);
+	assertTrue(r1.isOk());
+	final String uploadUrl = r1.getUploadUrl();
+	assertNotNull(uploadUrl);
+	assertFalse(uploadUrl.isEmpty());
+	final SourceUploadQuery.Response r2 = newBooks().upload().source().exec(uploadUrl, new File(getUploadMp3()));
+	assertNotNull(r2);
+	assertTrue(r2.isOk());
+	final String sourceId = r2.getSourceId();
+	assertNotNull(sourceId);
+	assertEquals(ID_LEN, sourceId.length());
+
+	final SourceQuery.Response r3 = newBooks().source().source().accessToken(getAccessToken()).sourceId(sourceId).waiting().exec();
+	assertNotNull(r3);
+	assertTrue(r3.isOk());
+	assertNotNull(r3.getId());
+	assertEquals(ID_LEN, r3.getId().length());
+	assertNotNull(r3.getName());
+	assertEquals(getUploadMp3().substring(getUploadMp3().lastIndexOf("/") + 1), r3.getName());
+	assertNotNull(r3.getStatus());
+	assertEquals(SourceQuery.ERROR, r3.getStatus());
+	assertNotNull(r3.getFormat());
+	assertEquals("", r3.getFormat());
+	assertTrue(r3.getSize() > 0);
+
+	final SourceQuery.File[] files = r3.getFiles();
+	assertNotNull(files);
+	assertEquals(0, files.length);
+
+	final RemoveQuery.Response rr = newBooks().source().remove().accessToken(getAccessToken()).sourceId(sourceId).waiting().exec();
+	assertNotNull(rr);
+	assertTrue(rr.isOk());
+    }
+
+
+    @Test public void removeNoSourceId() throws IOException
     {
 	if (!isReady())
 	    return;

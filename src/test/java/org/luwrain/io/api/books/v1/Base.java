@@ -27,6 +27,7 @@ class Base extends Assert
     private String mail = null;
     private String passwd = null;
     private String uploadDocX = null;
+    private String uploadMp3 = null;
     private String accessToken = null;
 
     protected Base()
@@ -40,6 +41,7 @@ class Base extends Assert
 	    this.mail = props.getProperty("mail");
 	    this.passwd = props.getProperty("passwd");
 	    this.uploadDocX = props.getProperty("upload-docx");
+	    	    this.uploadMp3 = props.getProperty("upload-mp3");
 	}
 	catch(IOException e)
 	{
@@ -80,6 +82,11 @@ class Base extends Assert
         protected String getUploadDocX()
     {
 	return this.uploadDocX;
+    }
+
+            protected String getUploadMp3()
+    {
+	return this.uploadMp3;
     }
 
     protected boolean isReady()

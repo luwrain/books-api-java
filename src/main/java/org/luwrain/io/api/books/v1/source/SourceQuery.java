@@ -23,6 +23,8 @@ import org.luwrain.io.api.books.v1.*;
 public final class SourceQuery extends Query
 {
     static public final String
+	ACTIVE = "ACTIVE",
+	ERROR = "ERROR",
 	NO_SOURCE_ID = "NO_SOURCE_ID",
 	INVALID_SOURCE_ID = "INVALID_SOURCE_ID";
 
@@ -63,6 +65,8 @@ public final class SourceQuery extends Query
 	private String status = null;
 	@SerializedName("format")
 	private String format = null;
+	@SerializedName("size")
+	private Long size = null;
 	@SerializedName("files")
 	private List<File> files = null;
 	public String getId()
@@ -76,6 +80,10 @@ public final class SourceQuery extends Query
 	public String getStatus()
 	{
 	    return this.status;
+	}
+	public long getSize()
+	{
+	    return this.size != null?this.size.longValue():0;
 	}
 	public String getFormat()
 	{
