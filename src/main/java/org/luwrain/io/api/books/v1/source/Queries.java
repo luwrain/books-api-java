@@ -39,4 +39,9 @@ public final class Queries
     {
 	return new UploadQuery(con);
     }
+
+            public SourceQuery source()
+    {
+	return new SourceQuery(con);
+    }
 }

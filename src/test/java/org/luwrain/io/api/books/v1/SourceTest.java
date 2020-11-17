@@ -39,6 +39,30 @@ public final class SourceTest extends Base
 	assertNotNull(sourceId);
 	assertEquals(ID_LEN, sourceId.length());
 
+	final SourceQuery.Response r3 = newBooks().source().source().accessToken(getAccessToken()).sourceId(sourceId).waiting().exec();
+	assertNotNull(r3);
+	assertTrue(r3.isOk());
+	assertNotNull(r3.getId());
+	assertEquals(ID_LEN, r3.getId().length());
+	assertNotNull(r3.getName());
+	assertEquals(getUploadDocX().substring(getUploadDocX().lastIndexOf("/") + 1), r3.getName());
+	assertNotNull(r3.getStatus());
+	assertEquals("ACTIVE", r3.getStatus());
+	assertNotNull(r3.getFormat());
+	assertEquals("DOCX", r3.getFormat());
+
+	final SourceQuery.File[] files = r3.getFiles();
+	assertNotNull(files);
+	assertEquals(1, files.length);
+	final SourceQuery.File file = files[0];
+	assertNotNull(file);
+	assertEquals(0, file.getId());
+	assertNotNull(file.getName());
+		assertEquals(getUploadDocX().substring(getUploadDocX().lastIndexOf("/") + 1), file.getName());
+		assertTrue(file.getSize() > 0);
+		assertNotNull(file.getFormat());
+		assertEquals("DOCX", file.getFormat());
+
 	final RemoveQuery.Response rr = newBooks().source().remove().accessToken(getAccessToken()).sourceId(sourceId).waiting().exec();
 	assertNotNull(rr);
 	assertTrue(rr.isOk());
@@ -78,7 +102,37 @@ public final class SourceTest extends Base
 	}
     }
 
+    @Test public void sourceNoSourceId() throws IOException
+    {
+	if (!isReady())
+	    return;
+	try {
+	    newBooks().source().source().accessToken(getAccessToken()).exec();
+	    assertTrue(false);
+	}
+	catch(BooksException e)
+	{
+	    final ErrorResponse r = e.getErrorResponse();
+	    assertNotNull(r);
+	    assertNotNull(r.getType());
+	    assertEquals(SourceQuery.NO_SOURCE_ID, r.getType());
+	}
+    }
 
-
-    
+    @Test public void sourceInvalidSourceId() throws IOException
+    {
+	if (!isReady())
+	    return;
+	try {
+	    newBooks().source().source().accessToken(getAccessToken()).sourceId("123").exec();
+	    assertTrue(false);
+	}
+	catch(BooksException e)
+	{
+	    final ErrorResponse r = e.getErrorResponse();
+	    assertNotNull(r);
+	    assertNotNull(r.getType());
+	    assertEquals(SourceQuery.INVALID_SOURCE_ID, r.getType());
+	}
+    }
 }
