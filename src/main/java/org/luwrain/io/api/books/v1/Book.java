@@ -21,25 +21,16 @@ public final class Book
     @SerializedName("id")
     private String id = null;
 
-       @SerializedName("authors")
-    private String authors = null;
-
-    @SerializedName("title")
-    private String title = null;
+    @SerializedName("name")
+    private String name = null;
 
     public String getId()
     {
 	return this.id;
     }
 
-    public String getTitle()
+    public String getName()
     {
-	return this.title;
+	return this.name;
     }
-
-    public String getAuthors()
-    {
-	return this.authors;
-    }
-
 }

@@ -131,8 +131,8 @@ public final class RepoTest extends Base
 		book = b;
 	}
 	assertNotNull(book);
-	assertNotNull(book.getTitle());
-	assertEquals(TITLE, book.getTitle());
+	assertNotNull(book.getName());
+	assertEquals(TITLE, book.getName());
     }
 
         private void collectionAdd(String bookId) throws IOException
