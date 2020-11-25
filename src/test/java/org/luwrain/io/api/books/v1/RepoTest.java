@@ -35,15 +35,15 @@ public final class RepoTest extends Base
 	final String bookId = r1.getNewBookId();
 	assertNotNull(bookId);
 	assertEquals(ID_LEN, bookId.length());
-	//	title(bookId);
+	title(bookId);
 	tagNoBookId();
 	tagInvalidBookId();
 	tagNoTag(bookId);
 	//FIXME:tagInvalidTag
 	tagNoValue(bookId);
 	//FIXME:tagTooLongValue
-	//		collectionAdd(bookId);
-	//	collectionIncluded(bookId);
+			collectionAdd(bookId);
+			//collectionIncluded(bookId);
 
 	final RemoveQuery.Response rr = newBooks().repo().remove().accessToken(getAccessToken()).bookId(bookId).exec();
 	assertNotNull(rr);
@@ -126,11 +126,9 @@ public final class RepoTest extends Base
 	assertNotNull(books);
 	assertTrue(books.length > 0);
 	Book book = null;
-	System.out.println("need " + bookId);
 	for(Book b: books)
 	{
 	    assertNotNull(b.getId());
-	    System.out.println("booked " + b.getId());
 	    if (b.getId().equals(bookId))
 		book = b;
 	}
@@ -146,6 +144,22 @@ public final class RepoTest extends Base
 	assertTrue(r.isOk());
     }
 
+        @Test public void createNoName() throws IOException
+    {
+		if (!isReady())
+	    return;
+	try {
+	    newBooks().repo().create().accessToken(getAccessToken()).exec();
+	    assertTrue(false);
+	}
+	catch(BooksException e)
+	{
+	    final ErrorResponse r = e.getErrorResponse();
+	    assertNotNull(r);
+	    assertNotNull(r.getType());
+	    assertEquals(CreateQuery.NO_NAME, r.getType());
+	}
+    }
 
     @Test public void repo() throws IOException
     {
