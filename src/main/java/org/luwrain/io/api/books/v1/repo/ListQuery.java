@@ -20,33 +20,21 @@ import com.google.gson.annotations.*;
 
 import org.luwrain.io.api.books.v1.*;
 
-public final class UploadQuery extends Query
+public final class ListQuery extends Query
 {
-    static public final String FORMAT_MP3_ZIP = "mp3-zip";
-
-    UploadQuery(Connection con)
+        ListQuery(Connection con)
     {
 	super(con);
     }
 
-    public UploadQuery accessToken(String atoken)
+    public ListQuery accessToken(String atoken)
     {
-	return (UploadQuery)addArg("atoken", atoken);
-    }
-
-        public UploadQuery format(String format)
-    {
-	return (UploadQuery)addArg("format", format);
-    }
-
-            public UploadQuery bookId(String book)
-    {
-	return (UploadQuery)addArg("book", book);
+	return (ListQuery)addArg("atoken", atoken);
     }
 
     public Response exec() throws IOException
     {
-	try (final BufferedReader r = new BufferedReader(new InputStreamReader(con.doGet("repo/upload/", urlArgs)))){
+	try (final BufferedReader r = new BufferedReader(new InputStreamReader(con.doGet("repo/list/", urlArgs)))){
 	    final Response res = gson.fromJson(r, Response.class);
 	    return res;
 	    	}
@@ -54,11 +42,13 @@ public final class UploadQuery extends Query
 
     public final class Response extends CommonResponse
     {
-	@SerializedName("upload")
-	private String uploadId = null;
-	public String getUploadId()
+	@SerializedName("books")
+	private List<Book> books = null;
+	public Book[] getBooks()
 	{
-	    return this.uploadId;
+	    if (this.books == null)
+		return null;
+	    return this.books.toArray(new Book[this.books.size()]);
 	}
     }
 }

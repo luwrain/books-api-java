@@ -35,18 +35,13 @@ public final class Queries
 	return new CreateQuery(con);
     }
 
-    public UploadQuery upload()
-    {
-	return new UploadQuery(con);
-    }
-
         public TagQuery tag()
     {
 	return new TagQuery(con);
     }
 
-    public RepoQuery repo()
+    public ListQuery list()
     {
-	return new RepoQuery(con);
+	return new ListQuery(con);
     }
 }

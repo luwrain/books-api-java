@@ -35,26 +35,15 @@ public final class RepoTest extends Base
 	final String bookId = r1.getNewBookId();
 	assertNotNull(bookId);
 	assertFalse(bookId.isEmpty());
-	upload(bookId);
-	title(bookId);
+	//	title(bookId);
 	tagNoBookId();
 	tagInvalidBookId();
 	tagNoTag(bookId);
 	//FIXME:tagInvalidTag
 	tagNoValue(bookId);
 	//FIXME:tagTooLongValue
-		collectionAdd(bookId);
-	collectionIncluded(bookId);
-    }
-
-    private void upload(String bookId) throws IOException
-    {
-	final UploadQuery.Response r = newBooks().repo().upload().accessToken(getAccessToken()).format(UploadQuery.FORMAT_MP3_ZIP).bookId(bookId).exec();
-	assertNotNull(r);
-	assertTrue(r.isOk());
-	final String uploadId = r.getUploadId();
-	assertNotNull(uploadId);
-	assertFalse(uploadId.isEmpty());
+	//		collectionAdd(bookId);
+	//	collectionIncluded(bookId);
     }
 
     private void title(String bookId) throws IOException
@@ -156,7 +145,7 @@ public final class RepoTest extends Base
 
     @Test public void repo() throws IOException
     {
-	final RepoQuery.Response r = newBooks().repo().repo().accessToken(getAccessToken()).exec();
+	final ListQuery.Response r = newBooks().repo().list().accessToken(getAccessToken()).exec();
 	assertNotNull(r);
 	assertTrue(r.isOk());
 	final Book[] books = r.getBooks();
