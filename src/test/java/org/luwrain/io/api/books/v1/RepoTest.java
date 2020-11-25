@@ -23,18 +23,18 @@ import org.luwrain.io.api.books.v1.collection.*;
 public final class RepoTest extends Base
 {
     static public final String
-	TITLE = "Евгений Онегин";
+	NAME = "Евгений Онегин";
 
-    @Ignore @Test public void main() throws IOException
+@Test public void main() throws IOException
     {
 	if (!isReady())
 	    return;
-	final CreateQuery.Response r1 = newBooks().repo().create().accessToken(getAccessToken()).exec();
+	final CreateQuery.Response r1 = newBooks().repo().create().accessToken(getAccessToken()).name(NAME).exec();
 	assertNotNull(r1);
 	assertTrue(r1.isOk());
 	final String bookId = r1.getNewBookId();
 	assertNotNull(bookId);
-	assertFalse(bookId.isEmpty());
+	assertEquals(ID_LEN, bookId.length());
 	//	title(bookId);
 	tagNoBookId();
 	tagInvalidBookId();
@@ -44,11 +44,15 @@ public final class RepoTest extends Base
 	//FIXME:tagTooLongValue
 	//		collectionAdd(bookId);
 	//	collectionIncluded(bookId);
+
+	final RemoveQuery.Response rr = newBooks().repo().remove().accessToken(getAccessToken()).bookId(bookId).exec();
+	assertNotNull(rr);
+	assertTrue(rr.isOk());
     }
 
     private void title(String bookId) throws IOException
     {
-	final TagQuery.Response r = newBooks().repo().tag().accessToken(getAccessToken()).tag(TagQuery.TAG_TITLE).value(TITLE).bookId(bookId).exec();
+	final TagQuery.Response r = newBooks().repo().tag().accessToken(getAccessToken()).tag(TagQuery.TAG_TITLE).value(NAME).bookId(bookId).exec();
 	assertNotNull(r);
 	assertTrue(r.isOk());
     }
@@ -56,7 +60,7 @@ public final class RepoTest extends Base
     private void tagNoBookId() throws IOException
     {
 	try {
-	    newBooks().repo().tag().accessToken(getAccessToken()).tag(TagQuery.TAG_TITLE).value(TITLE).exec();
+	    newBooks().repo().tag().accessToken(getAccessToken()).tag(TagQuery.TAG_TITLE).value(NAME).exec();
 	    assertTrue(false);
 	}
 	catch(BooksException e)
@@ -71,7 +75,7 @@ public final class RepoTest extends Base
     private void tagInvalidBookId() throws IOException
     {
 	try {
-	    newBooks().repo().tag().accessToken(getAccessToken()).bookId("zzz").tag(TagQuery.TAG_TITLE).value(TITLE).exec();
+	    newBooks().repo().tag().accessToken(getAccessToken()).bookId("zzz").tag(TagQuery.TAG_TITLE).value(NAME).exec();
 	    assertTrue(false);
 	}
 	catch(BooksException e)
@@ -86,7 +90,7 @@ public final class RepoTest extends Base
     private void tagNoTag(String bookId) throws IOException
     {
 	try {
-	    newBooks().repo().tag().accessToken(getAccessToken()).bookId(bookId).value(TITLE).exec();
+	    newBooks().repo().tag().accessToken(getAccessToken()).bookId(bookId).value(NAME).exec();
 	    assertTrue(false);
 	}
 	catch(BooksException e)
@@ -132,7 +136,7 @@ public final class RepoTest extends Base
 	}
 	assertNotNull(book);
 	assertNotNull(book.getName());
-	assertEquals(TITLE, book.getName());
+	assertEquals(NAME, book.getName());
     }
 
         private void collectionAdd(String bookId) throws IOException

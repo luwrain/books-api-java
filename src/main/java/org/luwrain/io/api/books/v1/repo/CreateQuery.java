@@ -22,6 +22,9 @@ import org.luwrain.io.api.books.v1.*;
 
 public final class CreateQuery extends Query
 {
+    static public final String
+	NO_NAME = "NO_NAME";
+
     CreateQuery(Connection con)
     {
 	super(con);
@@ -30,6 +33,11 @@ public final class CreateQuery extends Query
     public CreateQuery accessToken(String atoken)
     {
 	return (CreateQuery)addArg("atoken", atoken);
+    }
+
+        public CreateQuery name(String name)
+    {
+	return (CreateQuery)addArg("name", name);
     }
 
     public Response exec() throws IOException

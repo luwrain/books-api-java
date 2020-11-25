@@ -14,39 +14,43 @@
 
 package org.luwrain.io.api.books.v1.repo;
 
-//import java.net.*;
+import java.util.*;
 import java.io.*;
+import com.google.gson.annotations.*;
 
 import org.luwrain.io.api.books.v1.*;
 
-public final class Queries
+public final class RemoveQuery extends Query
 {
-    private final Connection con;
-
-    public Queries(Connection con)
+        RemoveQuery(Connection con)
     {
-	if (con == null)
-	    throw new NullPointerException("con can't be null");
-	this.con = con;
+	super(con);
     }
 
-    public CreateQuery create()
+    public RemoveQuery accessToken(String atoken)
     {
-	return new CreateQuery(con);
+	return (RemoveQuery)addArg("atoken", atoken);
     }
 
-    public ListQuery list()
+        public RemoveQuery bookId(String book)
     {
-	return new ListQuery(con);
+	return (RemoveQuery)addArg("book", book);
     }
 
-    public RemoveQuery remove()
+            public RemoveQuery waiting()
     {
-	return new RemoveQuery(con);
+	return (RemoveQuery)addArg("wait", "1");
     }
 
-    public TagQuery tag()
+    public Response exec() throws IOException
     {
-	return new TagQuery(con);
+	try (final BufferedReader r = new BufferedReader(new InputStreamReader(con.doGet("repo/remove/", urlArgs)))){
+	    final Response res = gson.fromJson(r, Response.class);
+	    return res;
+	    	}
     }
-}
+
+    public final class Response extends CommonResponse
+    {
+    }
+    }
