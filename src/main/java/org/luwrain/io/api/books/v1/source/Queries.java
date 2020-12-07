@@ -40,8 +40,8 @@ public final class Queries
 	return new UploadQuery(con);
     }
 
-            public SourceQuery source()
+            public InfoQuery info()
     {
-	return new SourceQuery(con);
+	return new InfoQuery(con);
     }
 }

@@ -20,32 +20,32 @@ import com.google.gson.annotations.*;
 
 import org.luwrain.io.api.books.v1.*;
 
-public final class SourceQuery extends Query
+public final class InfoQuery extends Query
 {
     static public final String
-	ACTIVE = "ACTIVE",
+	READY = "READY",
 	ERROR = "ERROR",
 	NO_SOURCE_ID = "NO_SOURCE_ID",
 	INVALID_SOURCE_ID = "INVALID_SOURCE_ID";
 
-    SourceQuery(Connection con)
+    InfoQuery(Connection con)
     {
 	super(con);
     }
 
-        public SourceQuery accessToken(String atoken)
+        public InfoQuery accessToken(String atoken)
     {
-	return (SourceQuery)addArg("atoken", atoken);
+	return (InfoQuery)addArg("atoken", atoken);
     }
 
-            public SourceQuery sourceId(String source)
+            public InfoQuery sourceId(String source)
     {
-	return (SourceQuery)addArg("source", source);
+	return (InfoQuery)addArg("source", source);
     }
 
-                public SourceQuery waiting()
+                public InfoQuery waiting()
     {
-	return (SourceQuery)addArg("wait", "1");
+	return (InfoQuery)addArg("wait", "1");
     }
 
     public Response exec() throws IOException

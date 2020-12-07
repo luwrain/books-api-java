@@ -39,7 +39,7 @@ public final class SourceTest extends Base
 	assertNotNull(sourceId);
 	assertEquals(ID_LEN, sourceId.length());
 
-	final SourceQuery.Response r3 = newBooks().source().source().accessToken(getAccessToken()).sourceId(sourceId).waiting().exec();
+	final InfoQuery.Response r3 = newBooks().source().info().accessToken(getAccessToken()).sourceId(sourceId).waiting().exec();
 	assertNotNull(r3);
 	assertTrue(r3.isOk());
 	assertNotNull(r3.getId());
@@ -47,15 +47,15 @@ public final class SourceTest extends Base
 	assertNotNull(r3.getName());
 	assertEquals(getUploadDocX().substring(getUploadDocX().lastIndexOf("/") + 1), r3.getName());
 	assertNotNull(r3.getStatus());
-	assertEquals(SourceQuery.ACTIVE, r3.getStatus());
+	assertEquals(InfoQuery.READY, r3.getStatus());
 	assertNotNull(r3.getFormat());
 	assertEquals("DOCX", r3.getFormat());
 	assertTrue(r3.getSize() > 0);
 
-	final SourceQuery.File[] files = r3.getFiles();
+	final InfoQuery.File[] files = r3.getFiles();
 	assertNotNull(files);
 	assertEquals(1, files.length);
-	final SourceQuery.File file = files[0];
+	final InfoQuery.File file = files[0];
 	assertNotNull(file);
 	assertEquals(0, file.getId());
 	assertNotNull(file.getName());
@@ -86,7 +86,7 @@ public final class SourceTest extends Base
 	assertNotNull(sourceId);
 	assertEquals(ID_LEN, sourceId.length());
 
-	final SourceQuery.Response r3 = newBooks().source().source().accessToken(getAccessToken()).sourceId(sourceId).waiting().exec();
+	final InfoQuery.Response r3 = newBooks().source().info().accessToken(getAccessToken()).sourceId(sourceId).waiting().exec();
 	assertNotNull(r3);
 	assertTrue(r3.isOk());
 	assertNotNull(r3.getId());
@@ -94,12 +94,12 @@ public final class SourceTest extends Base
 	assertNotNull(r3.getName());
 	assertEquals(getUploadMp3().substring(getUploadMp3().lastIndexOf("/") + 1), r3.getName());
 	assertNotNull(r3.getStatus());
-	assertEquals(SourceQuery.ERROR, r3.getStatus());
+	assertEquals(InfoQuery.ERROR, r3.getStatus());
 	assertNotNull(r3.getFormat());
 	assertEquals("", r3.getFormat());
 	assertTrue(r3.getSize() > 0);
 
-	final SourceQuery.File[] files = r3.getFiles();
+	final InfoQuery.File[] files = r3.getFiles();
 	assertNotNull(files);
 	assertEquals(0, files.length);
 
@@ -148,7 +148,7 @@ public final class SourceTest extends Base
 	if (!isReady())
 	    return;
 	try {
-	    newBooks().source().source().accessToken(getAccessToken()).exec();
+	    newBooks().source().info().accessToken(getAccessToken()).exec();
 	    assertTrue(false);
 	}
 	catch(BooksException e)
@@ -156,7 +156,7 @@ public final class SourceTest extends Base
 	    final ErrorResponse r = e.getErrorResponse();
 	    assertNotNull(r);
 	    assertNotNull(r.getType());
-	    assertEquals(SourceQuery.NO_SOURCE_ID, r.getType());
+	    assertEquals(InfoQuery.NO_SOURCE_ID, r.getType());
 	}
     }
 
@@ -165,7 +165,7 @@ public final class SourceTest extends Base
 	if (!isReady())
 	    return;
 	try {
-	    newBooks().source().source().accessToken(getAccessToken()).sourceId("123").exec();
+	    newBooks().source().info().accessToken(getAccessToken()).sourceId("123").exec();
 	    assertTrue(false);
 	}
 	catch(BooksException e)
@@ -173,7 +173,7 @@ public final class SourceTest extends Base
 	    final ErrorResponse r = e.getErrorResponse();
 	    assertNotNull(r);
 	    assertNotNull(r.getType());
-	    assertEquals(SourceQuery.INVALID_SOURCE_ID, r.getType());
+	    assertEquals(InfoQuery.INVALID_SOURCE_ID, r.getType());
 	}
     }
 }
