@@ -33,17 +33,17 @@ public final class TasksTest extends Base
 	assertEquals(ID_LEN, taskId.length());
 
 	tagNoTag(taskId);
-		tagInvalidTag(taskId);
-		tagNoValue(taskId);
-		tagEmptyValue (taskId);
-		tagMaxValueLen(taskId);
+	tagInvalidTag(taskId);
+	tagNoValue(taskId);
+	tagEmptyValue (taskId);
+	tagMaxValueLen(taskId);
 
 	final RemoveQuery.Response rr = newBooks().tasks().remove().accessToken(getAccessToken()).taskId(taskId).exec();
 	assertNotNull(rr);
 	assertTrue(rr.isOk());
     }
 
-@Test public void removeNoTaskId() throws IOException
+    @Test public void removeNoTaskId() throws IOException
     {
 	if (!isReady())
 	    return;
@@ -111,7 +111,7 @@ public final class TasksTest extends Base
 	}
     }
 
-        private void tagNoTag(String taskId) throws IOException
+    private void tagNoTag(String taskId) throws IOException
     {
 	if (!isReady())
 	    return;
@@ -128,7 +128,7 @@ public final class TasksTest extends Base
 	}
     }
 
-private void tagInvalidTag(String taskId) throws IOException
+    private void tagInvalidTag(String taskId) throws IOException
     {
 	if (!isReady())
 	    return;
@@ -145,7 +145,7 @@ private void tagInvalidTag(String taskId) throws IOException
 	}
     }
 
-            private void tagNoValue(String taskId) throws IOException
+    private void tagNoValue(String taskId) throws IOException
     {
 	if (!isReady())
 	    return;
@@ -162,17 +162,16 @@ private void tagInvalidTag(String taskId) throws IOException
 	}
     }
 
-                private void tagEmptyValue(String taskId) throws IOException
+    private void tagEmptyValue(String taskId) throws IOException
     {
 	if (!isReady())
 	    return;
-final TagQuery.Response r = newBooks().tasks().tag().accessToken(getAccessToken()).taskId(taskId).tag(TagQuery.TITLE).value("").exec();
-assertNotNull(r);
-assertTrue(r.isOk());
+	final TagQuery.Response r = newBooks().tasks().tag().accessToken(getAccessToken()).taskId(taskId).tag(TagQuery.TITLE).value("").exec();
+	assertNotNull(r);
+	assertTrue(r.isOk());
     }
 
-
-private void tagMaxValueLen(String taskId) throws IOException
+    private void tagMaxValueLen(String taskId) throws IOException
     {
 	if (!isReady())
 	    return;
@@ -191,5 +190,4 @@ private void tagMaxValueLen(String taskId) throws IOException
 	    assertEquals(TagQuery.MAX_LENGTH_LIMIT_EXCEEDED, r.getType());
 	}
     }
-
 }
