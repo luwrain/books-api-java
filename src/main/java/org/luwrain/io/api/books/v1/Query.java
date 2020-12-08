@@ -44,8 +44,6 @@ public class Query
     {
 	if (argValue == null)
 	    throw new NullPointerException(argName + " can't be null");
-	if (argValue.isEmpty())
-	    throw new IllegalArgumentException(argName + " can't be empty");
 	urlArgs.put(argName, argValue);
 	return this;
     }

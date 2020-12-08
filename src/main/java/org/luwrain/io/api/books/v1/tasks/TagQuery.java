@@ -31,7 +31,7 @@ public final class TagQuery extends Query
 	INVALID_TASK_ID = "INVALID_TASK_ID",
 	NO_TAG = "NO_TAG",
 	INVALID_TAG = "INVALID_TAG",
-	NO_VALUE = "NO_TAG",
+	NO_VALUE = "NO_VALUE",
 	MAX_LENGTH_LIMIT_EXCEEDED = "MAX_LENGTH_LIMIT_EXCEEDED";
 
     TagQuery(Connection con)

@@ -32,6 +32,12 @@ public final class TasksTest extends Base
 	assertNotNull(taskId);
 	assertEquals(ID_LEN, taskId.length());
 
+	tagNoTag(taskId);
+		tagInvalidTag(taskId);
+		tagNoValue(taskId);
+		tagEmptyValue (taskId);
+		tagMaxValueLen(taskId);
+
 	final RemoveQuery.Response rr = newBooks().tasks().remove().accessToken(getAccessToken()).taskId(taskId).exec();
 	assertNotNull(rr);
 	assertTrue(rr.isOk());
@@ -105,7 +111,85 @@ public final class TasksTest extends Base
 	}
     }
 
+        private void tagNoTag(String taskId) throws IOException
+    {
+	if (!isReady())
+	    return;
+	try {
+	    newBooks().tasks().tag().accessToken(getAccessToken()).taskId(taskId).value("123").exec();
+	    assertTrue(false);
+	}
+	catch(BooksException e)
+	{
+	    final ErrorResponse r = e.getErrorResponse();
+	    assertNotNull(r);
+	    assertNotNull(r.getType());
+	    assertEquals(TagQuery.NO_TAG, r.getType());
+	}
+    }
+
+private void tagInvalidTag(String taskId) throws IOException
+    {
+	if (!isReady())
+	    return;
+	try {
+	    newBooks().tasks().tag().accessToken(getAccessToken()).taskId("123").taskId(taskId).tag("123").value("123").exec();
+	    assertTrue(false);
+	}
+	catch(BooksException e)
+	{
+	    final ErrorResponse r = e.getErrorResponse();
+	    assertNotNull(r);
+	    assertNotNull(r.getType());
+	    assertEquals(TagQuery.INVALID_TAG, r.getType());
+	}
+    }
+
+            private void tagNoValue(String taskId) throws IOException
+    {
+	if (!isReady())
+	    return;
+	try {
+	    newBooks().tasks().tag().accessToken(getAccessToken()).taskId(taskId).tag(TagQuery.TITLE).exec();
+	    assertTrue(false);
+	}
+	catch(BooksException e)
+	{
+	    final ErrorResponse r = e.getErrorResponse();
+	    assertNotNull(r);
+	    assertNotNull(r.getType());
+	    assertEquals(TagQuery.NO_VALUE, r.getType());
+	}
+    }
+
+                private void tagEmptyValue(String taskId) throws IOException
+    {
+	if (!isReady())
+	    return;
+final TagQuery.Response r = newBooks().tasks().tag().accessToken(getAccessToken()).taskId(taskId).tag(TagQuery.TITLE).value("").exec();
+assertNotNull(r);
+assertTrue(r.isOk());
+    }
 
 
+private void tagMaxValueLen(String taskId) throws IOException
+    {
+	if (!isReady())
+	    return;
+	final StringBuilder b = new StringBuilder();
+	for(int i = 0;i < 129;i++)
+	    b.append("a");
+	try {
+	    newBooks().tasks().tag().accessToken(getAccessToken()).taskId("123").taskId(taskId).tag(TagQuery.TITLE).value(new String(b)).exec();
+	    assertTrue(false);
+	}
+	catch(BooksException e)
+	{
+	    final ErrorResponse r = e.getErrorResponse();
+	    assertNotNull(r);
+	    assertNotNull(r.getType());
+	    assertEquals(TagQuery.MAX_LENGTH_LIMIT_EXCEEDED, r.getType());
+	}
+    }
 
 }
