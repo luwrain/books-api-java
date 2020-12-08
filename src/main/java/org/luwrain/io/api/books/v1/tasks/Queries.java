@@ -31,14 +31,18 @@ public final class Queries
 	this.con = con;
     }
 
-        public CreateQuery create()
+    public CreateQuery create()
     {
 	return new CreateQuery(con);
     }
 
-            public RemoveQuery remove()
+    public RemoveQuery remove()
     {
 	return new RemoveQuery(con);
     }
 
+    public TagQuery tag()
+    {
+	return new TagQuery(con);
+    }
 }

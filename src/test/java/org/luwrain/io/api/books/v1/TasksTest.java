@@ -30,7 +30,7 @@ public final class TasksTest extends Base
 	assertTrue(r.isOk());
 	final String taskId = r.getNewTaskId();
 	assertNotNull(taskId);
-	assertFalse(taskId.isEmpty());
+	assertEquals(ID_LEN, taskId.length());
 
 	final RemoveQuery.Response rr = newBooks().tasks().remove().accessToken(getAccessToken()).taskId(taskId).exec();
 	assertNotNull(rr);
@@ -70,6 +70,42 @@ public final class TasksTest extends Base
 	    assertEquals(RemoveQuery.INVALID_TASK_ID, r.getType());
 	}
     }
+
+    @Test public void tagNoTaskId() throws IOException
+    {
+	if (!isReady())
+	    return;
+	try {
+	    newBooks().tasks().tag().accessToken(getAccessToken()).tag(TagQuery.TITLE).value("123").exec();
+	    assertTrue(false);
+	}
+	catch(BooksException e)
+	{
+	    final ErrorResponse r = e.getErrorResponse();
+	    assertNotNull(r);
+	    assertNotNull(r.getType());
+	    assertEquals(TagQuery.NO_TASK_ID, r.getType());
+	}
+    }
+
+    @Test public void tagInvalidTaskId() throws IOException
+    {
+	if (!isReady())
+	    return;
+	try {
+	    newBooks().tasks().tag().accessToken(getAccessToken()).taskId("123").tag(TagQuery.TITLE).value("123").exec();
+	    assertTrue(false);
+	}
+	catch(BooksException e)
+	{
+	    final ErrorResponse r = e.getErrorResponse();
+	    assertNotNull(r);
+	    assertNotNull(r.getType());
+	    assertEquals(TagQuery.INVALID_TASK_ID, r.getType());
+	}
+    }
+
+
 
 
 }
