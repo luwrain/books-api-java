@@ -18,14 +18,32 @@ import com.google.gson.annotations.*;
 
 public final class Book
 {
+    static public final String
+	READY = "READY";
+
     @SerializedName("id")
     private String id = null;
 
     @SerializedName("name")
     private String name = null;
 
+    @SerializedName("status")
+    private String status = null;
+
+    @SerializedName("locked")
+    private Boolean locked = null;
+
+    @SerializedName("daisy")
+    private Boolean daisy = null;
+
+    @SerializedName("mp3")
+    private Boolean mp3 = null;
+
     @SerializedName("tags")
     private Tags tags = null;
+
+    @SerializedName("files")
+    private Files files = null;
 
     public String getId()
     {
@@ -37,9 +55,34 @@ public final class Book
 	return name;
     }
 
+    public String getStatus()
+    {
+	return status;
+    }
+
+    public Boolean getLocked()
+    {
+	return locked;
+    }
+
+    public Boolean getDaisy()
+    {
+	return daisy;
+    }
+
+    public Boolean getMp3()
+    {
+	return mp3;
+    }
+
     public Tags getTags()
     {
 	return tags;
+    }
+
+    public Files getFiles()
+    {
+	return files;
     }
 
     @Override public String toString()
@@ -54,6 +97,12 @@ public final class Book
 	    if (b.length() > 0)
 		b.append(", ");
 	    b.append(tags.authors.str.trim());
+	}
+	if (tags != null && tags.year != null && !tags.year.isEmpty())
+	{
+	    if (b.length() > 0)
+		b.append(", ");
+	    b.append(tags.year.trim());
 	}
 	return new String(b);
     }
@@ -105,6 +154,22 @@ public final class Book
 	public String getEditor()
 	{
 	    return editor;
+	}
+    }
+
+    static public final class Files
+    {
+	@SerializedName("daisyZip")
+	private String daisyZip = null;
+	@SerializedName("mp3Zip")
+	private String mp3Zip = null;
+	public String getDaisyZip()
+	{
+	    return daisyZip;
+	}
+	public String getMp3Zip()
+	{
+	    return mp3Zip;
 	}
     }
 }
