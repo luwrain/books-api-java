@@ -24,7 +24,7 @@ public final class SourceTest extends Base
 {
     @Test public void main() throws IOException
     {
-	if (!isReady() && getUploadDocX() != null)
+	if (!isReady() || getUploadDocX() == null)
 	    return;
 	final UploadQuery.Response r1 = newBooks().source().upload().accessToken(getAccessToken()).exec();
 	assertNotNull(r1);
@@ -71,7 +71,7 @@ public final class SourceTest extends Base
 
         @Test public void errorMp3() throws IOException
     {
-	if (!isReady() && getUploadMp3() != null)
+	if (!isReady() || getUploadMp3() == null)
 	    return;
 	final UploadQuery.Response r1 = newBooks().source().upload().accessToken(getAccessToken()).exec();
 	assertNotNull(r1);

@@ -1,0 +1,7 @@
+# Credentials for testing the access to books.luwrain.org. Please edit this file
+# and save it as test.properties. You must provide the real user name and password.
+
+mail =
+passwd =
+upload-docx =
+upload-mp3 =

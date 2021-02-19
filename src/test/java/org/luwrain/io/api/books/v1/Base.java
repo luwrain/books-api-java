@@ -34,7 +34,7 @@ class Base extends Assert
     {
 	try {
 	    final Properties props = new Properties();
-	    try (final BufferedReader r = new BufferedReader(new InputStreamReader(new FileInputStream(CONFIG_FILE)))) {
+	    try (final BufferedReader r = new BufferedReader(new InputStreamReader(Base.class.getResourceAsStream("test.properties")))) {
 		props.load(r);
 	    }
 	    this.baseUrl = props.getProperty("url");
@@ -47,12 +47,12 @@ class Base extends Assert
 	{
 	    System.out.println("No config file " + CONFIG_FILE.getAbsolutePath() + " (" + e.getMessage() + ")");
 	}
-	if (this.baseUrl == null || this.baseUrl.isEmpty())
-	    this.baseUrl = "http://books.luwrain.org";
     }
 
     Books newBooks()
     {
+	if (baseUrl == null || baseUrl.trim().isEmpty())
+	    	return new Factory().newInstance();
 	return new Factory().newInstance(baseUrl);
     }
 
