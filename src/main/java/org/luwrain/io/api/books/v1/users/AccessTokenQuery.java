@@ -25,7 +25,8 @@ public final class AccessTokenQuery extends Query
 {
     static public final String 
 	INVALID_CREDENTIALS = "INVALID_CREDENTIALS",
-	NOT_REGISTERED = "NOT_REGISTERED";
+	NOT_REGISTERED = "NOT_REGISTERED",
+	NOT_CONFIRMED = "NOT_CONFIRMED";
 
     AccessTokenQuery(Connection con)
     {
