@@ -24,13 +24,87 @@ public final class Book
     @SerializedName("name")
     private String name = null;
 
+    @SerializedName("tags")
+    private Tags tags = null;
+
     public String getId()
     {
-	return this.id;
+	return id;
     }
 
     public String getName()
     {
-	return this.name;
+	return name;
+    }
+
+    public Tags getTags()
+    {
+	return tags;
+    }
+
+    @Override public String toString()
+    {
+	final StringBuilder b = new StringBuilder();
+	if (tags != null && tags.title != null && !tags.title.trim().isEmpty())
+	    b.append(tags.title.trim()); else
+	    if (name != null && !name.trim().isEmpty())
+		b.append(name.trim());
+	if (tags != null && tags.authors != null && tags.authors.str != null && !tags.authors.str.trim().isEmpty())
+	{
+	    if (b.length() > 0)
+		b.append(", ");
+	    b.append(tags.authors.str.trim());
+	}
+	return new String(b);
+    }
+
+    static public final class Authors
+    {
+	@SerializedName("str")
+	private String str = null;
+	public String getStr()
+	{
+	    return str;
+	}
+    }
+
+    static public final class Tags
+    {
+	@SerializedName("title")
+	private String title = null;
+	@SerializedName("authors")
+	private Authors authors = null;
+	@SerializedName("year")
+	private String year = null;
+	@SerializedName("isbn")
+	private String isbn = null;
+	@SerializedName("publisher")
+	private String publisher = null;
+	@SerializedName("editor")
+	private String editor = null;
+	public String getTitle()
+	{
+	    return title;
+	}
+	public Authors getAuthors()
+	{
+	    return authors;
+	}
+	public String getYear()
+	{
+	    return year;
+	}
+	public String getIsbn()
+	{
+	    return isbn;
+	}
+	public String getPublisher()
+	{
+	    return publisher;
+	}
+	public String getEditor()
+	{
+	    return editor;
+	}
     }
 }
