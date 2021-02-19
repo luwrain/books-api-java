@@ -14,6 +14,6 @@
 
 package org.luwrain.io.api.books.v1;
 
-final class ErrorResponse extends Query.CommonResponse
+public final class ErrorResponse extends Query.CommonResponse
 {
 }

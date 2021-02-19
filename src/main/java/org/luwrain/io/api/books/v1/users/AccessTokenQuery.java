@@ -23,6 +23,10 @@ import org.luwrain.io.api.books.v1.*;
 
 public final class AccessTokenQuery extends Query
 {
+    static public final String 
+	INVALID_CREDENTIALS = "INVALID_CREDENTIALS",
+	NOT_REGISTERED = "NOT_REGISTERED";
+
     AccessTokenQuery(Connection con)
     {
 	super(con);

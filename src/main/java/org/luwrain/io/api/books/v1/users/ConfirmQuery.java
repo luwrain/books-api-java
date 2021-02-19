@@ -21,6 +21,14 @@ import org.luwrain.io.api.books.v1.*;
 
 public final class ConfirmQuery extends Query
 {
+    static public final String 
+    	noMail = "noMail",
+	noConfirmationCode = "noConfirmationCode",
+	invalidMail = "invalidMail",
+	invalidCode = "invalidCode",
+	tooManyAttempts = "tooManyAttempts";
+
+    
     ConfirmQuery(Connection con)
     {
 	super(con);

@@ -21,12 +21,13 @@ import org.luwrain.io.api.books.v1.*;
 
 public final class RegisterQuery extends Query
 {
-static public final String
-    NO_MAIL = "NO_MAIL",
-    NO_PASSWORD = "NO_PASSWORD",
-    INVALID_MAIL = "INVALID_MAIL",
-    INVALID_PASSWORD = "INVALID_PASSWORD",
-    MAIL_ADDRESS_ALREADY_IN_USE = "MAIL_ADDRESS_ALREADY_IN_USE";
+    static public final String
+	NO_MAIL = "NO_MAIL",
+	NO_PASSWORD = "NO_PASSWORD",
+	INVALID_MAIL = "INVALID_MAIL",
+	INVALID_PASSWORD = "INVALID_PASSWORD",
+	MAIL_ADDRESS_ALREADY_IN_USE = "MAIL_ADDRESS_ALREADY_IN_USE",
+	TOO_SHORT_PASSWORD = "TOO_SHORT_PASSWORD";
 
     RegisterQuery(Connection con)
     {
