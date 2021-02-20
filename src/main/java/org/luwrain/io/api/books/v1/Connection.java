@@ -33,7 +33,12 @@ public final class Connection
 	this.baseUrl = baseUrl;
     }
 
-    public InputStream doGet(String resource, Map<String, String> args) throws IOException
+        public InputStream doGet(String resource, Map<String, String> args) throws IOException
+    {
+	return doGet(resource, args, true);
+    }
+
+    public InputStream doGet(String resource, Map<String, String> args, boolean useBaseUrl) throws IOException
     {
 	if (resource == null)
 	    throw new NullPointerException("resource may not be null");
@@ -53,7 +58,10 @@ public final class Connection
 	    b.append(URLEncoder.encode(e.getKey().toString()) + "=" + URLEncoder.encode(e.getValue().toString()));
 	    first = false;
 	}
-	final URL url = new URL(getBaseUrl(), new String(b));
+	final URL url;
+	if (useBaseUrl)
+	url = new URL(getBaseUrl(), new String(b)); else
+	    	url = new URL(new String(b));
 	final HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
 	httpCon.connect();
 	if (httpCon.getResponseCode() == 200)
