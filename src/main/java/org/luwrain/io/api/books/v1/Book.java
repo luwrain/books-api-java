@@ -16,13 +16,17 @@ package org.luwrain.io.api.books.v1;
 
 import com.google.gson.annotations.*;
 
-public final class Book
+public class Book
 {
     static public final String
+	AUDIO = "AUDIO",
 	READY = "READY";
 
     @SerializedName("id")
     private String id = null;
+
+    @SerializedName("bookType")
+    private String bookType = null;
 
     @SerializedName("name")
     private String name = null;
@@ -48,6 +52,11 @@ public final class Book
     public String getId()
     {
 	return id;
+    }
+
+    public String getBookType()
+    {
+	return bookType;
     }
 
     public String getName()

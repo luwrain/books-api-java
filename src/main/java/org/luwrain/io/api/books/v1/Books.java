@@ -51,6 +51,11 @@ private final CookieManager cookieMan = new CookieManager();
 	this.con = con;
     }
 
+    public BookQuery book()
+    {
+	return new BookQuery(con);
+    }
+
     public org.luwrain.io.api.books.v1.users.Queries users()
     {
 	return new org.luwrain.io.api.books.v1.users.Queries(con);
