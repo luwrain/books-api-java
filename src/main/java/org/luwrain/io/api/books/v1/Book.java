@@ -116,6 +116,14 @@ public class Book
 	return new String(b);
     }
 
+    @Override public boolean equals(Object o)
+    {
+	if (o == null || !(o instanceof Book))
+	    return false;
+	final Book b = (Book)o;
+	return this.id != null && b.id != null && this.id.equals(b.id);
+    }
+
     static public final class Authors
     {
 	@SerializedName("str")

@@ -38,8 +38,10 @@ public interface Listener
 	this.book = book;
     }
 
-    void downloadDaisy(Listener listener, String accessToken) throws IOException
+    public void downloadDaisy(OutputStream os, Listener listener, String accessToken) throws IOException
     {
+	if (os == null)
+	    throw new NullPointerException("os canb't be null");
 	if (listener == null)
 	    throw new NullPointerException("listener can't be null");
 	if (book.getFiles() == null || book.getFiles().getDaisyZip() == null || book.getFiles().getDaisyZip().isEmpty())
@@ -47,10 +49,9 @@ public interface Listener
 	final Map<String, String> args = new HashMap();
 	if (accessToken != null && !accessToken.trim().isEmpty())
 	    args.put("atoken", accessToken);
-	try (final InputStream is = con.doGet(book.getFiles().getDaisyZip(), args, false)) {
-
+	try (final InputStream is = con.doGet(book.getFiles().getDaisyZip(), args, false)){
+	    copyAllBytes(is, os, listener);
 	}
-	
     }
 
     static private long copyAllBytes(InputStream is, OutputStream os, Listener listener) throws IOException
