@@ -43,7 +43,7 @@ public final class RemoveQuery extends Query
 
     public Response exec() throws IOException
     {
-	try (final BufferedReader r = new BufferedReader(new InputStreamReader(con.doGet("tasks/remove/", urlArgs)))){
+	try (final BufferedReader r = new BufferedReader(new InputStreamReader(con.doGet("tasks/remove/", urlArgs), CHARSET))){
 	    return gson.fromJson(r, Response.class);
 	}
     }

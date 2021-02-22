@@ -55,7 +55,7 @@ public final class Connection
 	    if (first)
 		b.append("?"); else
 		b.append("&");
-	    b.append(URLEncoder.encode(e.getKey().toString()) + "=" + URLEncoder.encode(e.getValue().toString()));
+	    b.append(URLEncoder.encode(e.getKey().toString(), Query.CHARSET) + "=" + URLEncoder.encode(e.getValue().toString(), Query.CHARSET));
 	    first = false;
 	}
 	final URL url;
@@ -135,16 +135,22 @@ public final class Connection
     {
 	if (args.isEmpty())
 	    return "";
-	final StringBuilder b = new StringBuilder();
-	boolean first = true;
-	for(Map.Entry<String, String> e: args.entrySet())
-	{
-	    b.append(first?prefix:"&");
-	    first = false;
-	    b.append(URLEncoder.encode(e.getKey())).append("=").append(e.getValue());
+	try {
+	    final StringBuilder b = new StringBuilder();
+	    boolean first = true;
+	    for(Map.Entry<String, String> e: args.entrySet())
+	    {
+		b.append(first?prefix:"&");
+		first = false;
+		b.append(URLEncoder.encode(e.getKey(), Query.CHARSET)).append("=").append(URLEncoder.encode(e.getValue(), Query.CHARSET));
+	    }
+	    return new String(b);
 	}
-	return new String(b);
-    }
+	catch(UnsupportedEncodingException e)
+	{
+	    throw new RuntimeException(e);
+	}
+	}
 
     private URL getBaseUrl() throws IOException
     {

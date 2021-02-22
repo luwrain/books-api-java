@@ -49,7 +49,7 @@ static public final String
 
     public Response exec() throws IOException
     {
-	try (final BufferedReader r = new BufferedReader(new InputStreamReader(con.doGet("collection/add/", urlArgs)))){
+	try (final BufferedReader r = new BufferedReader(new InputStreamReader(con.doGet("collection/add/", urlArgs), CHARSET))){
 	    	    final Response res = gson.fromJson(r, Response.class);
 	    return res;
 	}

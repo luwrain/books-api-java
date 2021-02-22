@@ -22,6 +22,7 @@ import com.google.gson.annotations.*;
 public class Query
 {
     static public final String
+	CHARSET = "UTF-8",
 	NO_VALID_ACCESS_TOKEN = "NO_VALID_ACCESS_TOKEN",
 	OK = "OK",
 	INTERNAL_SERVER_ERROR = "INTERNAL_SERVER_ERROR",

@@ -38,7 +38,7 @@ static public final String
 
     public Response exec() throws IOException
     {
-	try (final BufferedReader r = new BufferedReader(new InputStreamReader(con.doGet("user/atoken/verify/", urlArgs)))){
+	try (final BufferedReader r = new BufferedReader(new InputStreamReader(con.doGet("user/atoken/verify/", urlArgs), CHARSET))){
 	    return gson.fromJson(r, Response.class);
 	}
     }

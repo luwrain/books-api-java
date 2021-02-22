@@ -61,7 +61,7 @@ public final class TagQuery extends Query
 
     public Response exec() throws IOException
     {
-	try (final BufferedReader r = new BufferedReader(new InputStreamReader(con.doGet("repo/tag/", urlArgs)))){
+	try (final BufferedReader r = new BufferedReader(new InputStreamReader(con.doGet("repo/tag/", urlArgs), CHARSET))){
 	    final Response res = gson.fromJson(r, Response.class);
 	    return res;
 	    	}

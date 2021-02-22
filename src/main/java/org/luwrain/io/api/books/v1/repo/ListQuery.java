@@ -34,7 +34,7 @@ public final class ListQuery extends Query
 
     public Response exec() throws IOException
     {
-	try (final BufferedReader r = new BufferedReader(new InputStreamReader(con.doGet("repo/list/", urlArgs)))){
+	try (final BufferedReader r = new BufferedReader(new InputStreamReader(con.doGet("repo/list/", urlArgs), CHARSET))){
 	    final Response res = gson.fromJson(r, Response.class);
 	    return res;
 	    	}

@@ -35,7 +35,7 @@ public final class SourceUploadQuery extends Query
 	    throw new IllegalArgumentException("uploadUrl can't be empty");
 	if (file == null)
 	    throw new NullPointerException("file can't be null");
-	try (final BufferedReader r = new BufferedReader(new InputStreamReader(con.doUpload(uploadUrl, file)))){
+	try (final BufferedReader r = new BufferedReader(new InputStreamReader(con.doUpload(uploadUrl, file), CHARSET))){
 	    return gson.fromJson(r, Response.class);
 	}
     }

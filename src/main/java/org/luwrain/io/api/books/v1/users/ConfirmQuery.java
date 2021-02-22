@@ -45,7 +45,7 @@ public final class ConfirmQuery extends Query
 
     public Response exec() throws IOException
     {
-	try (final BufferedReader r = new BufferedReader(new InputStreamReader(con.doGet("user/confirm/", urlArgs)))){
+	try (final BufferedReader r = new BufferedReader(new InputStreamReader(con.doGet("user/confirm/", urlArgs), CHARSET))){
 	    return gson.fromJson(r, Response.class);
 	}
     }

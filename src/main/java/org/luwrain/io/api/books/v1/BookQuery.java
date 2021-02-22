@@ -47,7 +47,7 @@ public final class BookQuery extends Query
     {
 	if (id.trim().isEmpty())
 	    throw new IllegalStateException("No id provided");
-	try (final BufferedReader r = new BufferedReader(new InputStreamReader(con.doGet("books/" + id + "/", urlArgs)))){
+	try (final BufferedReader r = new BufferedReader(new InputStreamReader(con.doGet("books/" + id + "/", urlArgs), CHARSET))){
 	    	    final Response res = gson.fromJson(r, Response.class);
 	    return res;
 	}
