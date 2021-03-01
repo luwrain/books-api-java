@@ -119,6 +119,28 @@ public final class Connection
 	throw buildException(url, httpCon);
     }
 
+        public InputStream doPost(String resource, String data) throws IOException
+    {
+	final URL url = new URL(getBaseUrl(), resource);
+	final HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+	httpCon.setDoOutput(true);
+	httpCon.setInstanceFollowRedirects( false );
+	httpCon.setRequestMethod("POST");
+	final byte[] postData       = data.getBytes(java.nio.charset.StandardCharsets.UTF_8 );
+	final int    postDataLength = postData.length;
+	httpCon.setRequestProperty( "Content-Type", "application/x-www-form-urlencoded"); 
+	httpCon.setRequestProperty( "charset", "utf-8");
+	httpCon.setRequestProperty( "Content-Length", Integer.toString( postDataLength ));
+	httpCon.setUseCaches( false );
+	try( DataOutputStream w = new DataOutputStream( httpCon.getOutputStream())) {
+	    w.write( postData );
+	    w.flush();
+	}
+	if (httpCon.getResponseCode() == 200)
+	    return httpCon.getInputStream();
+	throw buildException(url, httpCon);
+    }
+
     void doPut(String resource) throws IOException
     {
 	final URL url = new URL(getBaseUrl(), resource);
